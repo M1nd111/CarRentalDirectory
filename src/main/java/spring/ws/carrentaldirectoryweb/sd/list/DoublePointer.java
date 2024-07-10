@@ -3,7 +3,7 @@ package spring.ws.carrentaldirectoryweb.sd.list;
 import lombok.Getter;
 import lombok.Setter;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
-import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 
 import java.util.Objects;

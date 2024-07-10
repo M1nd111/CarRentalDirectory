@@ -1,11 +1,10 @@
 package spring.ws.carrentaldirectoryweb.sd.redBlackTree;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.NilNode;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.Node;
-import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 

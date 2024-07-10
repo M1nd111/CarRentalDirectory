@@ -1,5 +1,6 @@
 package spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity;
 
+import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.HashService.HashTable;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 

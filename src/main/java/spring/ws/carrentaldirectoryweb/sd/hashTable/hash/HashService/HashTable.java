@@ -8,13 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
-import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
 import spring.ws.carrentaldirectoryweb.core.repository.UserRepository;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.functions.FunctionMiddleOfSquare;
 import spring.ws.carrentaldirectoryweb.sd.list.DoublePointer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component

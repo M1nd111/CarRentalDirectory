@@ -1,55 +1,287 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>users</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АрендАвто</title>
     <style>
         body {
+            background: url('https://www.funnyart.club/uploads/posts/2021-12/1640206291_44-www-funnyart-club-p-razmitie-foni-s-mashinami-46.jpg') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+            justify-content: center; /*!* Центрирование по горизонтали *!*/
+            align-items: center; /*!* Центрирование по вертикали *!*/
+            height: 100vh; /*!* Занимает всю высоту видимой части окна браузера *!*/
+            margin: 0; /*!* Убираем отступы по умолчанию *!*/
+            font-family: Arial, sans-serif; /*!* Шрифт для всей страницы *!*/
             display: flex;
-            justify-content: center; /* Центрирование по горизонтали */
-            align-items: center; /* Центрирование по вертикали */
-            height: 100vh; /* Занимает всю высоту видимой части окна браузера */
-            margin: 0; /* Убираем отступы по умолчанию */
         }
-        .brd {
-            border: 4px solid black; /* Толщина, стиль и цвет границы */
-            background: #fff1e4; /* Цвет фона */
-            padding: 10px; /* Внутренние отступы */
-            width: 300px; /* Ширина блока */
-        }
-    </style>
 
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Помещает фон под другие элементы */
+            transform: translate(0px, 0px); /* Начальное смещение */
+            transition: transform 0.1s ease-out; /* Плавное перемещение */
+        }
+        /*body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; !* Центрирование по горизонтали *!
+            align-items: center; !* Центрирование по вертикали *!
+            height: 100vh; !* Занимает всю высоту видимой части окна браузера *!
+            margin: 0; !* Убираем отступы по умолчанию *!
+            background-color: #f5f5f5; !* Цвет фона *!
+            font-family: Arial, sans-serif; !* Шрифт для всей страницы *!
+        }*/
+        header {
+            width: 100%; /* Шапка занимает всю ширину */
+            background-color: #2EACC7; /* Цвет фона шапки */
+            padding: 20px; /* Внутренние отступы шапки */
+            color: white; /* Цвет текста в шапке */
+            display: flex; /* Используем flex для управления расположением */
+            justify-content: flex-end; /* Выравнивание в начало шапки */
+            align-items: center; /* Выравнивание элементов по центру */
+            position: absolute; /* Фиксированное положение */
+            top: 0; /* Привязка к верхней части окна */
+            font-size: 24px; /* Размер текста в шапке */
+            font-weight: bold; /* Жирный текст */
+        }
+        .logo {
+            margin-left: 60px; /* Отступ справа для логотипа или текста */
+            margin-right: auto;
+        }
+        .search-button, .delete-button, .add-button {
+            margin-right: 20px;
+            padding: 10px 20px; /* Внутренние отступы для кнопки */
+            background-color: #2EACC7; /* Цвет фона кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none;
+            border-radius: 4px;
+         /*   border: 2px solid white; !* Белая рамка вокруг кнопки *!
+            border-radius: 4px; !* Сглаженные углы *!*/
+            cursor: pointer; /* Курсор указателя при наведении */
+            margin-left: 10px; /* Отступ слева между кнопками */
+            font-size: 13px; /* Размер текста в шапке */
+            font-weight: bold;
+        }
+        .debug-button{
+            margin-right: 700px;
+            padding: 10px 20px; /* Внутренние отступы для кнопки */
+            background-color: #2EACC7; /* Цвет фона кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: 2px solid rgba(30, 31, 34, 0.22); /* Белая рамка вокруг кнопки */
+            border-radius: 4px; /* Сглаженные углы */
+            cursor: pointer; /* Курсор указателя при наведении */
+            margin-left: 10px; /* Отступ слева между кнопками */
+            font-size: 13px; /* Размер текста в шапке */
+        }
+        .search-button:hover, .delete-button:hover, .add-button:hover, .debug-button:hover {
+            background-color: #077D97; /* Изменение цвета фона при наведении */
+        }
+        .contentModel {
+            display: flex;
+            flex-direction: column; /* Размещаем элементы в столбик */
+            align-items: flex-start; /* Выровнять элементы по левому краю */
+        }
+        .contentModel button {
+            align-self: center; /* Выровнять кнопку по центру */
+            padding: 5px 10px; /* Внутренние отступы для кнопки */
+            background-color: #2EACC7; /* Цвет фона кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none; /* Убираем границу */
+            border-radius: 4px; /* Скругленные углы */
+            cursor: pointer; /* Курсор указателя при наведении */
+        }
+        .content {
+            background: #FFFFFF; /* Цвет фона формы */
+            padding: 20px; /* Внутренние отступы */
+            border-radius: 8px; /* Скругленные углы */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень */
+            display: flex;
+            flex-direction: column; /* Размещаем элементы в столбик */
+            align-items: flex-start; /* Выровнять элементы по левому краю */
+            margin-top: 100px; /* Отступ сверху, чтобы форма не перекрывалась шапкой */
+        }
+        .content form {
+            display: flex;
+            flex-direction: column; /* Размещаем элементы в столбик */
+            gap: 15px; /* Расстояние между элементами */
+        }
+        .content label {
+            display: flex;
+            flex-direction: column; /* Выровнять текст и поле ввода по вертикали */
+        }
+        .content div {
+            display: flex;
+            gap: 15px; /* Расстояние между элементами */
+        }
+        .content button {
+            align-self: center; /* Выровнять кнопку по центру */
+            padding: 10px 20px; /* Внутренние отступы для кнопки */
+            background-color: #2EACC7; /* Цвет фона кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none; /* Убираем границу */
+            border-radius: 4px; /* Скругленные углы */
+            cursor: pointer; /* Курсор указателя при наведении */
+        }
+        .content button:hover {
+            background-color: #077D97; /* Изменение цвета фона при наведении */
+        }
+
+        /* Скрытое модальное окно по умолчанию */
+        .modal {
+            display: none; /* Скрываем модальное окно */
+            position: fixed; /* Фиксированное положение */
+            z-index: 1; /* Поверх других элементов */
+            top: 0; /* Расположение сверху относительно верхнего края окна */
+            left: 68%; /* Расположение слева относительно левого края окна */
+            width: 30%; /* Занимает всю ширину экрана */
+            height: 60%; /* Занимает всю высоту экрана */
+            padding: 30px;
+            border-radius: 8px;
+            /*background-color: rgba(0, 0, 0, 0); !* Полупрозрачный черный цвет фона *!*/
+        }
+
+        /* Контейнер модального содержимого */
+        .modal-content {
+            background-color: #fefefe; /* Белый фон */
+            margin: 15% auto; /* Центрируем по вертикали и горизонтали */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Ширина контента */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); /* Тень */
+            border-radius: 8px; /* Скругленные углы */
+        }
+
+        /* Закрыть кнопку */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
-<div class="brd">
-    <div th:insert="~{fragment :: header}"></div>
-
-    <form th:action="@{/users}">
-        <label for="firstname">Firstname:
-            <input id="firstname" type="text" name="firstname"  th:value="${filter.firstname()}">
-        </label>
-        <label for="lastname">Lastname:
-            <input id="lastname" type="text" name="lastname"  th:value="${filter.lastname()}">
-        </label>
-        <label for="birthDate">BirthDate:
-            <input id="birthDate" type="date" name="birthDate"  th:value="${filter.birthDate()}">
-        </label>
-        <div>
-            <label for="page">Page:
-                <input id="page" type="number" name="page" th:value="${users.metadata.page}">
-            </label><br>
-            <label for="size">Size:
-                <input id="size" type="number" name="size" th:value="${users.metadata.size}">
-            </label>
-        </div>
-
-
-        <button type="submit">Filter</button>
-    </form>
-
-    <th:each th:each="user : ${users.content}">
-        <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.username}|">User</a><br/>
-    </th:each>
-
+<header>
+    <div class="logo">@вто👾аренда</div>
+    <button id="delete-button" class="delete-button">Удалить</button>
+    <button id="add-button" class="add-button">Добавить</button>
+    <button id="search-button" class="search-button">Поиск🔎</button>
+</header>
+<div class="background"></div>
+<!-- Модальное окно -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="modalForm">
+            <!-- Ваши поля формы здесь -->
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" required>
+            <br><br>
+            <div class="contentModel">
+                <button type="submit">Подтвердить</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+<div class="content">
+    <form id="rental-list">
+        <th:each th:each="user : ${users.content}">
+            <label th:text="|${user.id}. ${user.username}|">User</label><br/>
+        </th:each>
+    </form>
+</div>
+
+<script>
+    // Получаем кнопки и модальное окно
+    var deleteBtn = document.getElementById("delete-button");
+    var addBtn = document.getElementById("add-button");
+    var searchBtn = document.getElementById("search-button");
+    var modal = document.getElementById("myModal");
+
+    // Получаем элемент закрытия модального окна
+    var span = document.getElementsByClassName("close")[0];
+
+    // При клике на кнопку открываем модальное окно
+    deleteBtn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    addBtn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    searchBtn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // При клике на крестик (закрыть) закрываем модальное окно
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // При клике за пределами модального окна тоже закрываем его
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Обработка отправки формы
+    var modalForm = document.getElementById("modalForm");
+    modalForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы
+        // Добавьте здесь логику для обработки отправки формы
+        // Например, отправка данных на сервер или другие действия
+        console.log("Форма отправлена");
+        // Закрываем модальное окно после отправки формы
+        modal.style.display = "none";
+    });
+
+</script>
+
 </body>
 </html>
+
+
+<!--<div th:insert="~{fragment :: header}"></div>-->
+
+<!--<form th:action="@{/users}">-->
+<!--    <label for="firstname">-->
+<!--        <input id="firstname" type="text" placeholder="First name" name="firstname">-->
+<!--    </label>-->
+
+<!--    <label for="lastname">-->
+<!--        <input id="lastname" type="text" placeholder="Last name" name="lastname">-->
+<!--    </label>-->
+
+<!--    <label for="birthDate">-->
+<!--        <input id="birthDate" type="date" placeholder="Birth date" name="birthDate">-->
+<!--    </label>-->
+
+<!--    <div>-->
+<!--        <label for="page">Page-->
+<!--            <input id="page" type="number" name="page">-->
+<!--        </label>-->
+
+<!--        <label for="size">Size-->
+<!--            <input id="size" type="number" name="size">-->
+<!--        </label>-->
+<!--    </div>-->
+
+<!--    <button type="submit">Filter</button>-->
+<!--</form>-->

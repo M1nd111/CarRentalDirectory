@@ -2,20 +2,20 @@ package spring.ws.carrentaldirectoryweb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
-import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = CarRentalDirectoryWebApplication.class)
 class CarRentalDirectoryWebApplicationTests {
 
     @Test
     void mainTest() {
+
         Integer hashTableSize = 10;
         RedBlackTree redBlackTree = new RedBlackTree(hashTableSize);
 
@@ -85,7 +85,6 @@ class CarRentalDirectoryWebApplicationTests {
 //        RedBlackTree.printTree(Info.root, 0);
         Boolean finish = true;
         assertEquals(finish, true);
-
     }
 
 }

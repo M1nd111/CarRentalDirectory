@@ -1,4 +1,4 @@
-package spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity;
+package spring.ws.carrentaldirectoryweb.core.dto;
 
 
 import lombok.*;

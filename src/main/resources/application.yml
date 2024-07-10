@@ -4,7 +4,7 @@ spring:
       prefix: /resources/templates/
       suffix: .html
   datasource:
-    url: jdbc:mysql://localhost:3306/directory
+    url: jdbc:mysql://localhost:3306/springdata
     username: root
     password: Root89
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -19,7 +19,7 @@ spring:
 
 logging:
   level:
-    root: warn
+    root: info
   file:
     name:
       loggFile

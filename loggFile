@@ -1,0 +1,14 @@
+2024-07-10T12:26:12.833+10:00  WARN 13492 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2024-07-10T12:26:12.945+10:00  WARN 13492 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: ac453244-cad5-458c-b801-ba796527105c
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-07-10T12:55:51.119+10:00  WARN 10652 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2024-07-10T12:55:51.190+10:00  WARN 10652 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: d41bebbc-30b6-47c1-862a-dac417c8d1bb
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+

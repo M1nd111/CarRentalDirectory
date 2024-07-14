@@ -1,6 +1,10 @@
 package spring.ws.carrentaldirectoryweb.sd.redBlackTree;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.NilNode;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.Node;
@@ -10,9 +14,12 @@ import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTabl
 
 import java.time.LocalDate;
 
+@Component
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class RedBlackTree extends Info {
-    private final Integer hashTableSize;
+    private Integer hashTableSize;
 
     public static void printTree(Node node, int level) {
         if (node != null) {

@@ -1,8 +1,8 @@
 package spring.ws.carrentaldirectoryweb.http.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 /*import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -10,12 +10,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;*/
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
+import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
 
 @Controller
 @RequestMapping("/users")
@@ -25,6 +23,7 @@ public class UserController {
     @Autowired
     RecordRepository recordRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping
     public String findAll(Model model){

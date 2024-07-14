@@ -70,7 +70,7 @@
             font-weight: bold;
         }
 
-        .debug-button, .save-button, .download-button {
+        .debug-button, .save-button, .download-button, .create-button {
             margin-right: 20px;
             padding: 10px 20px;
             background-color: #2EACC7;
@@ -83,7 +83,7 @@
         }
 
         .search-button:hover, .delete-button:hover, .add-button:hover, .debug-button:hover,
-        .save-button:hover, .download-button:hover {
+        .save-button:hover, .download-button:hover, .create-button:hover {
             background-color: #077D97;
         }
 
@@ -139,6 +139,19 @@
             background-color: #077D97;
         }
 
+        .modalCreate {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            top: 10%;
+            left: 53%;
+            transform: translateX(-50%);
+            width: 25%;
+            height: 50%;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -152,7 +165,7 @@
             border-radius: 8px;
         }
 
-        .modal-content {
+        .modal-content, .modalCreate-content {
             background-color: #fefefe;
             margin: auto;
             padding: 20px;
@@ -162,7 +175,7 @@
             border-radius: 8px;
         }
 
-        .close {
+        .close, .closeCreate {
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -170,7 +183,7 @@
         }
 
         .close:hover,
-        .close:focus {
+        .close:focus, .closeCreate:focus, .closeCreate:hover {
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -182,7 +195,7 @@
             gap: 15px;
         }
 
-        .modal-form label {
+        .modal-form label{
             display: flex;
             flex-direction: column;
         }
@@ -257,8 +270,12 @@
     <div class="header-left">
         <div class="logo">@вто👾аренда</div>
         <button id="debug-button" class="debug-button">Просмотр СД</button>
-        <button id="download-button" class="download-button">Загрузить файл</button>
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" id="file-input" name="file" style="display:none;" />
+            <button type="button" id="download-button" class="download-button">Загрузить файл</button>
+        </form>
         <button id="save-button" class="save-button">Сохранить файл</button>
+        <button id="create-button" class="create-button">Создать СД</button>
     </div>
     <div class="header-right">
         <button id="delete-button" class="delete-button">Удалить</button>
@@ -267,6 +284,16 @@
     </div>
 </header>
 <div class="background"></div>
+<div id="myModalCreate" class="modalCreate">
+    <div class="modalCreate-content">
+        <span class="closeCreate">&times;</span>
+        <form id="modalCreateForm" class="modal-form" >
+            <label for="size-table">Введите размер хэш-таблицы</label>
+            <input type="number" id="size-table" name="size" placeholder="10" required>
+            <button type="button" id="createTable-button">Потдвердить</button>
+        </form>
+    </div>
+</div>
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -294,7 +321,6 @@
         </form>
     </div>
 </div>
-
 <div class="content">
     <form id="rental-list" class="form-container">
         <table class="record-table">
@@ -315,11 +341,19 @@
 </div>
 
 <script>
+    var createBtn = document.getElementById("create-button");
     var deleteBtn = document.getElementById("delete-button");
     var addBtn = document.getElementById("add-button");
     var searchBtn = document.getElementById("search-button");
     var modal = document.getElementById("myModal");
+    var modalCreate = document.getElementById("myModalCreate");
     var span = document.getElementsByClassName("close")[0];
+    var spanCreate = document.getElementsByClassName("closeCreate")[0];
+    var buttonCreate = document.getElementsByClassName("createTable-button");
+
+    createBtn.onclick = function() {
+        modalCreate.style.display = "block";
+    }
 
     deleteBtn.onclick = function() {
         modal.style.display = "block";
@@ -332,14 +366,80 @@
     searchBtn.onclick = function() {
         modal.style.display = "block";
     }
-
+    buttonCreate.onclick = function() {
+        modal.style.display = "none";
+        modalCreate.style.display = "none";
+    }
     span.onclick = function() {
         modal.style.display = "none";
     }
-
+    spanCreate.onclick = function() {
+        modalCreate.style.display = "none";
+    }
     window.onclick = function(event) {
         if (event.target === modal) {
             modal.style.display = "none";
+            modalCreate.style.display = "none";
+        }
+    }
+
+    document.getElementById('createTable-button').addEventListener('click', function () {
+        var formData = new FormData(document.getElementById('modalCreateForm'));
+
+        fetch('http://localhost:8080/api/users/create', { // Make sure the URL is correct
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('СД успешно создана', 'Ваша СД была успешно создана.');
+                } else {
+                    showNotification('Ошибка создания СД', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка', 'Произошла ошибка при создании СД.');
+            });
+    });
+
+    document.getElementById('download-button').addEventListener('click', function() {
+        document.getElementById('file-input').click();
+    });
+
+    document.getElementById('file-input').addEventListener('change', function() {
+        var formData = new FormData(document.getElementById('upload-form'));
+
+        fetch('/api/upload/', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('Файл успешно загружен', 'Ваш файл был успешно загружен на сервер.');
+                } else {
+                    showNotification('Ошибка загрузки файла', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка', 'Произошла ошибка при загрузке файла.');
+            });
+    });
+
+    function showNotification(title, body) {
+        if (!("Notification" in window)) {
+            alert("Этот браузер не поддерживает уведомления.");
+        } else if (Notification.permission === "granted") {
+            new Notification(title, { body: body });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification(title, { body: body });
+                }
+            });
         }
     }
 </script>

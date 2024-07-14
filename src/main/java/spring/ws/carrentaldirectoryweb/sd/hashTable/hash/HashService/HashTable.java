@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
-import spring.ws.carrentaldirectoryweb.core.repository.UserRepository;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.functions.FunctionMiddleOfSquare;
 import spring.ws.carrentaldirectoryweb.sd.list.DoublePointer;
@@ -29,12 +28,6 @@ public class HashTable {
     @Getter
     @Setter
     private DoublePointer[] table;
-    private UserRepository userRepository;
-
-    @Autowired
-    public HashTable(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public HashTable(Integer size) {
         this.size = size;
@@ -134,8 +127,7 @@ public class HashTable {
         return "HashTable: filledCells=" + this.filledCells +
                 ", size=" + this.size +
                 ", m=" + this.m +
-                ", table=" + Arrays.toString(this.table) +
-                ", userRepository=" + this.userRepository + ")";
+                ", table=" + Arrays.toString(this.table) ;
     }
     public void printTable() {
         System.out.println("HashTable(filledCells=" + this.filledCells +

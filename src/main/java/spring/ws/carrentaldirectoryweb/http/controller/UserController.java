@@ -14,22 +14,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import spring.ws.carrentaldirectoryweb.core.repository.UserRepository;
-import spring.ws.carrentaldirectoryweb.core.service.UserService;
+import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
+import spring.ws.carrentaldirectoryweb.core.service.RecordService;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    UserService userService;
+    RecordService recordService;
     @Autowired
-    UserRepository userRepository;
+    RecordRepository recordRepository;
 
 
     @GetMapping
     public String findAll(Model model){
-        var page =  userService.findAll();
-        model.addAttribute("users");
+        var records =  recordService.findAll();
+        model.addAttribute("records", records);
         return "user/users";
     }
 

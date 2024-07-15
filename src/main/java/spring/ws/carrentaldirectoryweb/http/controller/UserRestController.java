@@ -1,25 +1,28 @@
 package spring.ws.carrentaldirectoryweb.http.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.annotation.SessionScope;
+import spring.ws.carrentaldirectoryweb.core.Hellper.ListToDb;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordWebDto;
+import spring.ws.carrentaldirectoryweb.core.entity.RecordEntity;
 import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
+import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@SessionAttributes("redBlackTree")
 public class UserRestController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -29,37 +32,70 @@ public class UserRestController {
     @Autowired
     RecordRepository recordRepository;
 
-    @Autowired
-    RedBlackTree redBlackTree;
+    @GetMapping("/all")
+    public List<RecordReadDto> getAllRecords(HttpSession session) {
+        ListToDb list = new ListToDb();
+        list.clearList();
+        recordService.delAll();
+        var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
+        redBlackTree.addAllRecords(Info.root, 0);
+
+        for(RecordWebDto recordWebDto : ListToDb.list){
+            recordService.addEntity(recordWebDto);
+        }
+
+        return recordService.findAll(); // Реализуйте метод для получения всех записей
+    }
 
     @PostMapping("/create")
-    public String create(@RequestParam("size") Integer size, Model model){
-        redBlackTree = new RedBlackTree(size);
-        model.addAttribute("redBlackTree", redBlackTree);
+    public String create(@RequestParam("size") Integer size,
+                         HttpSession session){
+        RedBlackTree redBlackTree = new RedBlackTree(size);
+        session.setAttribute("redBlackTree", redBlackTree);
         logger.info("RB HT SIZE: {}", redBlackTree.getHashTableSize());
         return "{\"status\":\"success\"}";
     }
 
     @PostMapping("/add")
-    public String add(@RequestParam("entity") RecordReadDto readDto, Model model){
-        redBlackTree = (RedBlackTree) model.getAttribute("redBlackTree");
-
-        redBlackTree.insertNode(readDto);
-
-        model.addAttribute("redBlackTree", redBlackTree);
+    public String add(@RequestParam("stateNumber") String stateNumber,
+                      @RequestParam("phoneNumber") String phoneNumber,
+                      @RequestParam("markName") String markName,
+                      @RequestParam("date") LocalDate date,
+                      HttpSession session){
+        var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
+        redBlackTree.insertNode(RecordReadDto.builder()
+                .id(0)
+                .stateNumber(stateNumber)
+                .phoneNumber(phoneNumber)
+                .markName(markName)
+                .date(date)
+                .build());
+        session.setAttribute("redBlackTree", redBlackTree);
+        redBlackTree.printLinesTree(Info.root, 0);
         logger.info("RB HT SIZE: {}", redBlackTree.getHashTableSize());
         return "{\"status\":\"success\"}";
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("entity") RecordReadDto readDto, Model model){
-        redBlackTree = (RedBlackTree) model.getAttribute("redBlackTree");
+    public String delete(@RequestParam("stateNumber") String stateNumber,
+                         @RequestParam("phoneNumber") String phoneNumber,
+                         @RequestParam("markName") String markName,
+                         @RequestParam("date") LocalDate date,
+                         HttpSession session){
+        var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
 
-        redBlackTree.deleteNode(readDto);
+        redBlackTree.deleteNode(RecordReadDto.builder()
+                .id(0)
+                .stateNumber(stateNumber)
+                .phoneNumber(phoneNumber)
+                .markName(markName)
+                .date(date)
+                .build());
 
-        model.addAttribute("redBlackTree", redBlackTree);
+        session.setAttribute("redBlackTree", redBlackTree);
+        redBlackTree.printLinesTree(Info.root, 0);
         logger.info("RB HT SIZE: {}", redBlackTree.getHashTableSize());
         return "{\"status\":\"success\"}";
     }
-}
 
+}

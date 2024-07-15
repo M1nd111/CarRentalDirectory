@@ -1,0 +1,104 @@
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class  ConcurrentLinkedQueueExample {
+   public static void main(String[] args) {
+       ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();
+
+       Thread producer = new Thread(new Producer(queue));
+       Thread consumer = new Thread(new Consumer(queue));
+
+       producer.start();
+       consumer.start();
+   }
+}
+
+class Producer implements Runnable {
+
+   ConcurrentLinkedQueue<String> queue;
+   Producer(ConcurrentLinkedQueue<String> queue){
+       this.queue = queue;
+   }
+   public void run() {
+       System.out.println("Класс для добавление элементов в очередь");
+       try {
+           for (int i = 1; i < 5; i++) {
+               queue.add("Элемент #" + i);
+               System.out.println("Добавили: Элемент #" + i);
+               Thread.sleep(300);
+           }
+       } catch (InterruptedException ex) {
+           ex.printStackTrace();
+           Thread.currentThread().interrupt();
+       }
+   }
+}
+
+class Consumer implements Runnable {
+
+   ConcurrentLinkedQueue<String> queue;
+   Consumer(ConcurrentLinkedQueue<String> queue){
+       this.queue = queue;
+   }
+
+   public void run() {
+       String str;
+       System.out.println("Класс для получения элементов из очереди");
+       for (int x = 0; x < 5; x++) {
+           while ((str = queue.poll()) != null) {
+               System.out.println("Вытянули: " + str);
+           }
+           try {
+               Thread.sleep(600);
+           } catch (InterruptedException ex) {
+               ex.printStackTrace();
+               Thread.currentThread().interrupt();
+           }
+       }
+   }
+}
+
+
+public class Main {
+
+   public static void main(String[] args) {
+       Semaphore sem = new Semaphore(1);
+       CommonResource res = new CommonResource();
+       new Thread(new MyThread(res, sem, "MyThread_1")).start();
+       new Thread(new MyThread(res, sem, "MyThread_2")).start();
+       new Thread(new MyThread(res, sem, "MyThread_3")).start();
+   }
+}
+
+class CommonResource {
+   int value = 0;
+}
+
+class MyThread implements Runnable {
+   CommonResource commonResource;
+   Semaphore semaphore;
+   String name;
+   MyThread(CommonResource commonResource, Semaphore sem, String name) {
+       this.commonResource = commonResource;
+       this.semaphore = sem;
+       this.name = name;
+   }
+
+   public void run() {
+
+       try {
+           System.out.println(name + " ожидает разрешение");
+           semaphore.acquire();
+           commonResource.value = 1;
+           for (int i = 1; i < 7; i++) {
+               System.out.println(this.name + ": " + commonResource.value);
+               commonResource.value++;
+               Thread.sleep(150);
+           }
+       } catch (InterruptedException e) {
+           System.out.println(e.getMessage() + " " + name);
+           Thread.currentThread().interrupt();
+       }
+       System.out.println(name + " освобождает разрешение");
+       semaphore.release();
+   }
+}

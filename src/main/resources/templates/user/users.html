@@ -165,7 +165,7 @@
             border-radius: 8px;
         }
 
-        .modal-content, .modalCreate-content {
+        .modal-content, .modalCreate-content, .modalAdd-content, .modalDell-content {
             background-color: #fefefe;
             margin: auto;
             padding: 20px;
@@ -175,7 +175,7 @@
             border-radius: 8px;
         }
 
-        .close, .closeCreate {
+        .close, .closeCreate, .closeAdd, .closeDell{
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -183,7 +183,11 @@
         }
 
         .close:hover,
-        .close:focus, .closeCreate:focus, .closeCreate:hover {
+        .close:focus,
+        .closeCreate:focus,
+        .closeCreate:hover,
+        .closeAdd:hover, .closeDell:hover,
+        .closeAdd:focus, .closeDell:focus{
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -231,36 +235,36 @@
         }
 
         .table-header th {
-            padding-right: 20px; /* Добавляем отступы справа для заголовков */
+            padding-right: 20px;
             color: #fefefe;
         }
         /* Стили для формы */
         .form-container {
-            width: 600px; /* Статическая ширина формы */
-            height: 400px; /* Статическая высота формы */
-            overflow-y: scroll; /* Вертикальная прокрутка */
-            overflow-x: hidden; /* Отключение горизонтальной прокрутки, если не нужна */
-            padding: 10px; /* Внутренние отступы */
+            width: 600px;
+            height: 400px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            padding: 10px;
         }
 
         /* Стили для таблицы */
         .record-table {
-            width: 100%; /* Таблица занимает всю ширину контейнера */
-            border-collapse: collapse; /* Схлопывание границ таблицы */
+            width: 100%;
+            border-collapse: collapse;
             border-spacing: 20px;
         }
 
         .record-table th, .record-table td {
-            padding: 8px; /* Внутренние отступы для ячеек */
+            padding: 8px;
             border-radius: 10px;
-            text-align: center; /* Измените на center */
+            text-align: center;
         }
 
         .record-table th {
-            background-color: rgba(46, 172, 199, 0.66); /* Фон заголовков таблицы */
-            padding: 6px 15px; /* Уменьшите верхний и нижний отступ */
-            width: 100px; /* Установите желаемую ширину */
-            text-align: center; /* Измените на center */
+            background-color: rgba(46, 172, 199, 0.66);
+            padding: 6px 15px;
+            width: 100px;
+            text-align: center;
         }
 
     </style>
@@ -284,6 +288,7 @@
     </div>
 </header>
 <div class="background"></div>
+
 <div id="myModalCreate" class="modalCreate">
     <div class="modalCreate-content">
         <span class="closeCreate">&times;</span>
@@ -294,6 +299,7 @@
         </form>
     </div>
 </div>
+
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -321,6 +327,49 @@
         </form>
     </div>
 </div>
+
+<div id="modalAdd" class="modal">
+    <div class="modalAdd-content">
+        <span class="closeAdd">&times;</span>
+        <form id="modalFormAdd" name="entity" class="modal-form" th:action="@{/api/users/add}" method="post">
+            <label for="state-numberAdd">Госномер</label>
+            <input type="text" id="state-numberAdd" name="stateNumber" placeholder="A000AA" required>
+
+            <label for="phone-numberAdd">Номер телефона</label>
+            <input type="text" id="phone-numberAdd" name="phoneNumber" placeholder="+7*** *** ****"  required>
+
+            <label for="brandAdd">Марка машины</label>
+            <input type="text" id="brandAdd" name="markName" placeholder="Subaru" required>
+
+            <label for="dateAdd">Дата</label>
+            <input type="date" id="dateAdd" name="date" required>
+
+            <button type="submit">Подтвердить</button>
+        </form>
+    </div>
+</div>
+
+<div id="modalDell" class="modal">
+    <div class="modalDell-content">
+        <span class="closeDell">&times;</span>
+        <form id="modalFormDell" name="entity" class="modal-form" th:action="@{/api/users/dell}" method="post">
+            <label for="state-numberDell">Госномер</label>
+            <input type="text" id="state-numberDell" name="stateNumber" placeholder="A000AA" required>
+
+            <label for="phone-numberDell">Номер телефона</label>
+            <input type="text" id="phone-numberDell" name="phoneNumber" placeholder="+7*** *** ****"  required>
+
+            <label for="brandDell">Марка машины</label>
+            <input type="text" id="brandDell" name="markName" placeholder="Subaru" required>
+
+            <label for="dateDell">Дата</label>
+            <input type="date" id="dateDell" name="date" required>
+
+            <button type="submit">Подтвердить</button>
+        </form>
+    </div>
+</div>
+
 <div class="content">
     <form id="rental-list" class="form-container">
         <table class="record-table">
@@ -346,29 +395,55 @@
     var addBtn = document.getElementById("add-button");
     var searchBtn = document.getElementById("search-button");
     var modal = document.getElementById("myModal");
+    var modalAdd = document.getElementById("modalAdd");
+    var modalDell = document.getElementById("modalDell");
     var modalCreate = document.getElementById("myModalCreate");
     var span = document.getElementsByClassName("close")[0];
     var spanCreate = document.getElementsByClassName("closeCreate")[0];
+    var spanAdd = document.getElementsByClassName("closeAdd")[0];
+    var spanDell = document.getElementsByClassName("closeDell")[0];
     var buttonCreate = document.getElementsByClassName("createTable-button");
+    var upload = document.getElementsByClassName("download-button");
+
+    upload.onclick = function() {
+        modal.style.display = "none";
+        modalCreate.style.display = "none";
+        modalAdd.style.display = "none";
+        modalDell.style.display = "none";
+    }
 
     createBtn.onclick = function() {
         modalCreate.style.display = "block";
+        modalAdd.style.display = "none";
+        modalDell.style.display = "none";
+        modal.style.display = "none";
     }
 
     deleteBtn.onclick = function() {
-        modal.style.display = "block";
+        modalAdd.style.display = "none";
+        modalDell.style.display = "block";
+        modal.style.display = "none";
+        modalCreate.style.display = "none";
     }
 
     addBtn.onclick = function() {
-        modal.style.display = "block";
+        modalAdd.style.display = "block";
+        modalDell.style.display = "none";
+        modal.style.display = "none";
+        modalCreate.style.display = "none";
     }
 
     searchBtn.onclick = function() {
         modal.style.display = "block";
+        modalCreate.style.display = "none";
+        modalAdd.style.display = "none";
+        modalDell.style.display = "none";
     }
     buttonCreate.onclick = function() {
         modal.style.display = "none";
         modalCreate.style.display = "none";
+        modalAdd.style.display = "none";
+        modalDell.style.display = "none";
     }
     span.onclick = function() {
         modal.style.display = "none";
@@ -376,10 +451,18 @@
     spanCreate.onclick = function() {
         modalCreate.style.display = "none";
     }
+    spanAdd.onclick = function() {
+        modalAdd.style.display = "none";
+    }
+    spanDell.onclick = function() {
+        modalDell.style.display = "none";
+    }
     window.onclick = function(event) {
         if (event.target === modal) {
             modal.style.display = "none";
             modalCreate.style.display = "none";
+            modalDell.style.display = "none";
+            modalAdd.style.display = "none";
         }
     }
 
@@ -394,6 +477,7 @@
             .then(data => {
                 if (data.status === 'success') {
                     showNotification('СД успешно создана', 'Ваша СД была успешно создана.');
+                    updateRecordTable();
                 } else {
                     showNotification('Ошибка создания СД', data.message);
                 }
@@ -419,6 +503,7 @@
             .then(data => {
                 if (data.status === 'success') {
                     showNotification('Файл успешно загружен', 'Ваш файл был успешно загружен на сервер.');
+                    this.reset();
                 } else {
                     showNotification('Ошибка загрузки файла', data.message);
                 }
@@ -441,6 +526,91 @@
                 }
             });
         }
+    }
+
+
+    // Обработка добавления
+    document.getElementById('modalFormAdd').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        fetch('/api/users/add', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('Запись успешно добавлена', 'Новая запись была добавлена.');
+                    updateRecordTable(); // Обновляем таблицу
+                    this.reset();
+                } else {
+                    showNotification('Ошибка добавления записи', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка', 'Произошла ошибка при добавлении записи.');
+            });
+    });
+
+    //Обработка удаления
+    document.getElementById('modalFormDell').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        fetch('/api/users/delete', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('Запись успешно удалена', 'Запись была удалена.');
+                    updateRecordTable(); // Обновляем таблицу
+                    this.reset();
+                } else {
+                    showNotification('Ошибка удаления записи', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка', 'Произошла ошибка при удалении записи.');
+            });
+    });
+
+    function updateRecordTable() {
+        fetch('/api/users/all')
+            .then(response => response.json())
+            .then(records => {
+                const tableBody = document.querySelector('.record-table tbody');
+                tableBody.innerHTML = '';
+
+                const row1 = document.createElement('tr');
+                row1.innerHTML = `
+                    <th>State Number</th>
+                    <th>Phone Number</th>
+                    <th>Mark Name</th>
+                    <th>Date</th>
+             `;
+                tableBody.appendChild(row1)
+
+                records.forEach(record => {
+                    const row2 = document.createElement('tr');
+                    row2.innerHTML = `
+                    <td>${record.stateNumber}</td>
+                    <td>${record.phoneNumber}</td>
+                    <td>${record.markName}</td>
+                    <td>${record.date}</td>
+             `;
+                    tableBody.appendChild(row2);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>
 </body>

@@ -59,6 +59,10 @@ class CarRentalDirectoryWebApplicationTests {
                 .stateNumber("test4")
                 .build();
 
+
+
+        redBlackTree.printLinesTree(Info.root, 0);
+
         redBlackTree.insertNode(readDto);
         readDto.setStateNumber("newHash");
         redBlackTree.insertNode(readDto);
@@ -67,15 +71,16 @@ class CarRentalDirectoryWebApplicationTests {
         redBlackTree.insertNode(readDto3);
         redBlackTree.insertNode(readDto4);
 
+
         System.out.println("\n\n");
-        RedBlackTree.printTree(Info.root, 0);
+//        redBlackTree.printTree(Info.root, 0);
 
 //        System.out.println("\n");
-//        RedBlackTree.printLinesTree(Info.root, 0);
+        redBlackTree.printLinesTree(Info.root, 0);
         System.out.println("\n");
 
-        RedBlackTree.printLinesTreeWithPeriodForDate(Info.root, 0,
-                LocalDate.of(9,1,1), LocalDate.of(11,12,1));
+//        redBlackTree.printLinesTreeWithPeriodForDate(Info.root, 0,
+//                LocalDate.of(9,1,1), LocalDate.of(11,12,1));
 
 //        redBlackTree.deleteNode(readDto);
 //        redBlackTree.deleteNode(readDto1);

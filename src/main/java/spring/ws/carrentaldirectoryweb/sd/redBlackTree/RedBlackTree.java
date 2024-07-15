@@ -13,6 +13,8 @@ import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -21,7 +23,7 @@ import java.time.LocalDate;
 public class RedBlackTree extends Info {
     private Integer hashTableSize;
 
-    public static void printTree(Node node, int level) {
+    public void printTree(Node node, int level) {
         if (node != null) {
             printTree(node.right, level + 1);
             for (int i = 0; i < level; i++) {
@@ -35,7 +37,7 @@ public class RedBlackTree extends Info {
         }
     }
 
-    public static void printLinesTree(Node node, int level) {
+    public  void printLinesTree(Node node, int level) {
         if (node != null) {
             printLinesTree(node.right, level + 1);
             System.out.print(node.data + " -> \t");
@@ -44,7 +46,15 @@ public class RedBlackTree extends Info {
         }
     }
 
-    public static void printLinesTreeWithPeriodForDate(Node node, int level, LocalDate first, LocalDate second) {
+    public void addAllRecords(Node node, int level) {
+        if (node != null) {
+            addAllRecords(node.right, level + 1);
+            node.hashTable.addToDb();
+            addAllRecords(node.left, level + 1);
+        }
+    }
+
+    public  void printLinesTreeWithPeriodForDate(Node node, int level, LocalDate first, LocalDate second) {
         if (node != null) {
             printLinesTreeWithPeriodForDate(node.right, level + 1, first, second);
 
@@ -70,7 +80,7 @@ public class RedBlackTree extends Info {
         root = null;
     }
 
-    private static void rotateRight(Node node) {
+    private void rotateRight(Node node) {
         Node parent = node.parent;
         Node leftChild = node.left;
 
@@ -85,7 +95,7 @@ public class RedBlackTree extends Info {
         replaceParentsChild(parent, node, leftChild);
     }
 
-    private static void rotateLeft(Node node) {
+    private  void rotateLeft(Node node) {
         Node parent = node.parent;
         Node rightChild = node.right;
 
@@ -101,7 +111,7 @@ public class RedBlackTree extends Info {
 
     }
 
-    private static void replaceParentsChild(Node parent, Node oldChild, Node newChild) {
+    private void replaceParentsChild(Node parent, Node oldChild, Node newChild) {
         if (parent == null) {
             root = newChild;
         } else if (parent.left == oldChild) {
@@ -169,7 +179,7 @@ public class RedBlackTree extends Info {
             fixRedBlackTiesAfterInsert(newNode);
         }
     }
-    private static Node getUncle(Node parent) {
+    private  Node getUncle(Node parent) {
         Node grandparent = parent.parent;
         if (grandparent.left == parent) {
             return grandparent.right;
@@ -180,7 +190,7 @@ public class RedBlackTree extends Info {
         }
     }
 
-    private static void fixRedBlackTiesAfterInsert(Node node){
+    private  void fixRedBlackTiesAfterInsert(Node node){
         Node parent = node.parent;
 
         //case 1
@@ -233,7 +243,7 @@ public class RedBlackTree extends Info {
         }
     }
 
-    private static Node deleteNodeWithZeroOrOneChild(Node node) {
+    private  Node deleteNodeWithZeroOrOneChild(Node node) {
         if (node.left != null) {
             replaceParentsChild(node.parent, node, node.left);
             return node.left; // moved-up node
@@ -252,7 +262,7 @@ public class RedBlackTree extends Info {
         }
     }
 
-    private static Node findMinimum(Node node) {
+    private  Node findMinimum(Node node) {
         while (node.left != null) {
             node = node.left;
         }
@@ -316,7 +326,7 @@ public class RedBlackTree extends Info {
         }
 
     }
-    private static void fixRedBlackTiesAfterDelete(Node node){
+    private  void fixRedBlackTiesAfterDelete(Node node){
         // Case 1: Examined node is root, end of recursion
         if (node == root) {
             // Uncomment the following line if you want to enforce black roots (rule 2):
@@ -353,7 +363,7 @@ public class RedBlackTree extends Info {
         }
     }
 
-    private static Node getSibling(Node node){
+    private  Node getSibling(Node node){
         Node parent = node.parent;
         if(node == parent.left){
             return parent.right;
@@ -366,11 +376,11 @@ public class RedBlackTree extends Info {
         }
     }
 
-    private static boolean isBlack(Node node){
+    private  boolean isBlack(Node node){
         return node == null || node.color;
     }
 
-    private static void handleRedSibling(Node node, Node sibling) {
+    private  void handleRedSibling(Node node, Node sibling) {
         // Recolor...
         sibling.color = true;
         node.parent.color = false;
@@ -384,7 +394,7 @@ public class RedBlackTree extends Info {
         // немного не понял, отсутсвует послдений шаг
     }
 
-    private static void handleBlackSiblingWithAtLeastOneRedChild(Node node, Node sibling) {
+    private  void handleBlackSiblingWithAtLeastOneRedChild(Node node, Node sibling) {
         boolean nodeIsLeftChild = node == node.parent.left;
 
         // Case 5: Black sibling with at least one red child + "outer nephew" is black
@@ -414,7 +424,7 @@ public class RedBlackTree extends Info {
         }
     }
 
-    private static void fixRedBlackAfterDelete(Node node){
+    private  void fixRedBlackAfterDelete(Node node){
 
         //case 1
         if(node == root){

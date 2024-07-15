@@ -143,4 +143,13 @@ public class HashTable {
             }
         }
     }
+
+    public void addToDb() {
+        for(DoublePointer pointer : table){
+            if(pointer.getData() != null){
+                pointer.addToDbFromList();
+            }
+        }
+    }
+
 }

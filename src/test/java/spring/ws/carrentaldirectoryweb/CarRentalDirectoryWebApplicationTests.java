@@ -16,55 +16,53 @@ class CarRentalDirectoryWebApplicationTests {
     @Test
     void mainTest() {
 
-        Integer hashTableSize = 10;
+        Integer hashTableSize = 3;
         RedBlackTree redBlackTree = new RedBlackTree(hashTableSize);
 
         RecordReadDto readDto = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.now())
-                .markName("test")
-                .phoneNumber("test")
-                .stateNumber("test")
+                .date(LocalDate.of(2024,7,30))
+                .markName("Subaru")
+                .phoneNumber("+79834270216")
+                .stateNumber("A300BB")
                 .build();
 
         RecordReadDto readDto1 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(8,8,8))
-                .markName("test1")
-                .phoneNumber("test1")
-                .stateNumber("test1")
+                .date(LocalDate.of(2024,8,8))
+                .markName("Subaru")
+                .phoneNumber("+79149818482")
+                .stateNumber("A300AB")
                 .build();
 
         RecordReadDto readDto2 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(10,10,10))
-                .markName("test2")
-                .phoneNumber("test2")
-                .stateNumber("test2")
+                .date(LocalDate.of(2023,2,11))
+                .markName("Subaru")
+                .phoneNumber("+79149818482")
+                .stateNumber("A311BB")
                 .build();
 
         RecordReadDto readDto3 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(12,12,12))
-                .markName("test3")
-                .phoneNumber("test3")
-                .stateNumber("test3")
+                .date(LocalDate.of(2022,12,12))
+                .markName("Subaru")
+                .phoneNumber("+79149818482")
+                .stateNumber("A311CC")
                 .build();
 
         RecordReadDto readDto4 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(11,11,11))
-                .markName("test4")
-                .phoneNumber("test4")
-                .stateNumber("test4")
+                .date(LocalDate.of(2024,11,11))
+                .markName("Subaru")
+                .phoneNumber("+79149818482")
+                .stateNumber("A311CD")
                 .build();
 
 
 
         redBlackTree.printLinesTree(Info.root, 0);
 
-        redBlackTree.insertNode(readDto);
-        readDto.setStateNumber("newHash");
         redBlackTree.insertNode(readDto);
         redBlackTree.insertNode(readDto1);
         redBlackTree.insertNode(readDto2);
@@ -73,14 +71,15 @@ class CarRentalDirectoryWebApplicationTests {
 
 
         System.out.println("\n\n");
-//        redBlackTree.printTree(Info.root, 0);
+        redBlackTree.printStruct(Info.root, 0);
 
-//        System.out.println("\n");
+        System.out.println("\n");
         redBlackTree.printLinesTree(Info.root, 0);
         System.out.println("\n");
 
-//        redBlackTree.printLinesTreeWithPeriodForDate(Info.root, 0,
-//                LocalDate.of(9,1,1), LocalDate.of(11,12,1));
+        System.out.println("Поиск");
+        redBlackTree.printLinesTreeWithPeriodForDate(Info.root, "A300AB",
+                LocalDate.of(2024,1,1), LocalDate.of(2024,12,12));
 
 //        redBlackTree.deleteNode(readDto);
 //        redBlackTree.deleteNode(readDto1);

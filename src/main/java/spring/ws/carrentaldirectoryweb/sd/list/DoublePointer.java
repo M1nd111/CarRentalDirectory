@@ -3,6 +3,7 @@ package spring.ws.carrentaldirectoryweb.sd.list;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.core.Hellper.ListToDb;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordWebDto;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
@@ -59,8 +60,22 @@ public class DoublePointer {
         DoublePointer search = null;
 
         while (point != null && !Objects.equals(search != null ? search.data.getLine() : null, line)) {
-            if (Objects.equals(point.data.getLine(), line)) {
+            if (Objects.equals(point.data.getStateNumber(), line)) {
                 search = point;
+            }
+            point = point.next;
+        }
+
+        return search;
+    }
+
+    public String searchByValueForState(String line) {
+        DoublePointer point = list.head;
+        String search = null;
+
+        while (point != null && !Objects.equals(search, line)) {
+            if (Objects.equals(point.data.getStateNumber(), line)) {
+                search = point.data.getLine();
             }
             point = point.next;
         }
@@ -219,10 +234,12 @@ public class DoublePointer {
 
         while (current != null) {
             System.out.print(current.getData().getLine() + " | ");
+            DebugMessage.message += current.getData().getLine() + " | ";
             current = current.next;
         }
 
         System.out.println();
+        DebugMessage.message += "\n";
     }
 
     public void addToDbFromList() {

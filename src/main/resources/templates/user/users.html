@@ -164,6 +164,56 @@
             padding: 30px;
             border-radius: 8px;
         }
+        .modalDebug {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            align-self: center;
+            width: 70%; /* Ширина окна */
+            height: 70%; /* Высота окна */
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .modalDebug-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%; /* Измените ширину на 100% */
+            height: 100%; /* Измените высоту на 100% */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            border-radius: 8px;
+            overflow-y: auto; /* Добавление прокрутки только по вертикали */
+        }
+
+        .modalSearch {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            align-self: center;
+            width: 50%; /* Ширина окна */
+            height: 50%; /* Высота окна */
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .modalSearch-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center; /* Центрирование текста */
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            border-radius: 8px;
+            overflow-y: auto;
+        }
 
         .modal-content, .modalCreate-content, .modalAdd-content, .modalDell-content {
             background-color: #fefefe;
@@ -175,7 +225,7 @@
             border-radius: 8px;
         }
 
-        .close, .closeCreate, .closeAdd, .closeDell{
+        .close, .closeCreate, .closeAdd, .closeDell, .closeDebug, .closeSearch{
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -187,7 +237,9 @@
         .closeCreate:focus,
         .closeCreate:hover,
         .closeAdd:hover, .closeDell:hover,
-        .closeAdd:focus, .closeDell:focus{
+        .closeAdd:focus, .closeDell:focus,
+        .closeDebug:focus, .closeDebug:hover,
+        .closeSearch:focus, .closeSearch:hover{
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -278,7 +330,7 @@
             <input type="file" id="file-input" name="file" style="display:none;" />
             <button type="button" id="download-button" class="download-button">Загрузить файл</button>
         </form>
-        <button id="save-button" class="save-button">Сохранить файл</button>
+        <button id="saveButton" class="save-button">Сохранить файл</button>
         <button id="create-button" class="create-button">Создать СД</button>
     </div>
     <div class="header-right">
@@ -288,6 +340,20 @@
     </div>
 </header>
 <div class="background"></div>
+
+<div id="ModalDebug" class="modalDebug">
+    <div class="modalDebug-content">
+        <span class="closeDebug">&times;</span>
+        <span id="debug-result"></span>
+    </div>
+</div>
+
+<div id="ModalSearch" class="modalSearch">
+    <div class="modalSearch-content">
+        <span class="closeSearch">&times;</span>
+        <span id="search-result"></span>
+    </div>
+</div>
 
 <div id="myModalCreate" class="modalCreate">
     <div class="modalCreate-content">
@@ -303,27 +369,18 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <form id="modalForm" class="modal-form">
+        <form id="search-form" class="modal-form">
             <label for="state-number">Госномер</label>
-            <input type="text" id="state-number" name="state-number" placeholder="A000AA" required>
+            <input type="text" id="state-number" name="stateNumber" placeholder="A000AA" required>
 
-            <label for="phone-number">Номер телефона</label>
-            <input type="text" id="phone-number" name="phone-number" placeholder="+7*** *** ****"  required>
-
-            <label for="brand">Марка машины</label>
-            <input type="text" id="brand" name="brand" placeholder="Subaru" required>
-
-            <label for="date">Дата</label>
-            <input type="date" id="date" name="date" required>
-
-            <label >Период аренды от</label>
+            <label>Период аренды от</label>
             <div>
-                <input type="date" id="start-date" name="start-date" required>
+                <input type="date" id="start-date" name="startDate" required>
                 <span>до</span>
-                <input type="date" id="end-date" name="end-date" required>
+                <input type="date" id="end-date" name="endDate" required>
             </div>
 
-            <button type="submit">Подтвердить</button>
+            <button type="submit" id="searchBtn">Подтвердить</button>
         </form>
     </div>
 </div>
@@ -393,23 +450,48 @@
     var createBtn = document.getElementById("create-button");
     var deleteBtn = document.getElementById("delete-button");
     var addBtn = document.getElementById("add-button");
-    var searchBtn = document.getElementById("search-button");
+    var debugBtn = document.getElementById("debug-button");
     var modal = document.getElementById("myModal");
     var modalAdd = document.getElementById("modalAdd");
     var modalDell = document.getElementById("modalDell");
+    var modalSearch = document.getElementById("ModalSearch");
+    var searchBtn = document.getElementById("search-button");
     var modalCreate = document.getElementById("myModalCreate");
+    var modalDebug = document.getElementById("ModalDebug");
     var span = document.getElementsByClassName("close")[0];
     var spanCreate = document.getElementsByClassName("closeCreate")[0];
     var spanAdd = document.getElementsByClassName("closeAdd")[0];
     var spanDell = document.getElementsByClassName("closeDell")[0];
+    var spanDebug = document.getElementsByClassName("closeDebug")[0];
     var buttonCreate = document.getElementsByClassName("createTable-button");
     var upload = document.getElementsByClassName("download-button");
+    var spanSearch = document.getElementsByClassName("closeSearch")[0];
+
+
+    spanSearch.onclick = function() {
+        document.getElementById('ModalSearch').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('ModalSearch')) {
+            document.getElementById('ModalSearch').style.display = 'none';
+        }
+    }
+    debugBtn.onclick = function() {
+        modalDebug.style.display = "block"
+        modal.style.display = "none";
+        modalCreate.style.display = "none";
+        modalAdd.style.display = "none";
+        modalDell.style.display = "none";
+    }
 
     upload.onclick = function() {
         modal.style.display = "none";
         modalCreate.style.display = "none";
         modalAdd.style.display = "none";
         modalDell.style.display = "none";
+        modalDebug.style.display = "none"
+
     }
 
     createBtn.onclick = function() {
@@ -417,6 +499,8 @@
         modalAdd.style.display = "none";
         modalDell.style.display = "none";
         modal.style.display = "none";
+        modalDebug.style.display = "none"
+
     }
 
     deleteBtn.onclick = function() {
@@ -424,6 +508,8 @@
         modalDell.style.display = "block";
         modal.style.display = "none";
         modalCreate.style.display = "none";
+        modalDebug.style.display = "none"
+
     }
 
     addBtn.onclick = function() {
@@ -431,6 +517,8 @@
         modalDell.style.display = "none";
         modal.style.display = "none";
         modalCreate.style.display = "none";
+        modalDebug.style.display = "none"
+
     }
 
     searchBtn.onclick = function() {
@@ -438,12 +526,16 @@
         modalCreate.style.display = "none";
         modalAdd.style.display = "none";
         modalDell.style.display = "none";
+        modalDebug.style.display = "none"
+
     }
     buttonCreate.onclick = function() {
         modal.style.display = "none";
         modalCreate.style.display = "none";
         modalAdd.style.display = "none";
         modalDell.style.display = "none";
+        modalDebug.style.display = "none"
+
     }
     span.onclick = function() {
         modal.style.display = "none";
@@ -457,14 +549,42 @@
     spanDell.onclick = function() {
         modalDell.style.display = "none";
     }
+    spanDebug.onclick = function() {
+        modalDebug.style.display = "none";
+    }
     window.onclick = function(event) {
         if (event.target === modal) {
             modal.style.display = "none";
             modalCreate.style.display = "none";
             modalDell.style.display = "none";
             modalAdd.style.display = "none";
+            modalDebug.style.display = "none";
         }
     }
+    document.getElementById('search-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var formData = new FormData(event.target);
+
+        fetch('api/users/search', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Откройте модальное окно и отобразите результаты поиска
+                    document.getElementById('search-result').innerText = data.result;
+                    document.getElementById('ModalSearch').style.display = 'block';
+                } else {
+                    // Обработка ошибок
+                    console.error('Error:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
 
     document.getElementById('createTable-button').addEventListener('click', function () {
         var formData = new FormData(document.getElementById('modalCreateForm'));
@@ -488,6 +608,26 @@
             });
     });
 
+    document.getElementById('debug-button').addEventListener('click', function () {
+        fetch('/api/users/debug', {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Вывод результата в модальное окно
+                    document.getElementById('debug-result').innerText = data.result;
+                    modalDebug.style.display = "block";
+                } else {
+                    alert('Ошибка: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при вызове метода debug.');
+            });
+    });
+
     document.getElementById('download-button').addEventListener('click', function() {
         document.getElementById('file-input').click();
     });
@@ -495,7 +635,7 @@
     document.getElementById('file-input').addEventListener('change', function() {
         var formData = new FormData(document.getElementById('upload-form'));
 
-        fetch('/api/upload/', {
+        fetch('/api/users/upload', {
             method: 'POST',
             body: formData
         })
@@ -527,7 +667,30 @@
             });
         }
     }
+    document.getElementById('modalFormAdd').addEventListener('submit', function(event) {
+        event.preventDefault();
 
+        var formData = new FormData(this);
+
+        fetch('/api/users/add', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('Запись успешно добавлена', 'Новая запись была добавлена.');
+                    updateRecordTable(); // Обновляем таблицу
+                    this.reset();
+                } else {
+                    showNotification('Ошибка добавления записи', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка', 'Произошла ошибка при добавлении записи.');
+            });
+    });
 
     // Обработка добавления
     document.getElementById('modalFormAdd').addEventListener('submit', function(event) {
@@ -612,6 +775,19 @@
                 console.error('Error:', error);
             });
     }
+
+    document.getElementById("saveButton").addEventListener("click", function() {
+        $.ajax({
+            url: '/api/users/export',
+            method: 'POST',
+            success: function(response) {
+                alert(response);
+            },
+            error: function(err) {
+                alert('Ошибка: ' + err.responseText);
+            }
+        });
+    });
 </script>
 </body>
 </html>

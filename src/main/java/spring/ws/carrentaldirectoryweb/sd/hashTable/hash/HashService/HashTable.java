@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
@@ -110,6 +111,22 @@ public class HashTable {
         return new DoublePointer();
     }
 
+    public String returnByStateNumber(String stateNumber)  {
+        Integer key = FunctionMiddleOfSquare.getKey(stateNumber, m);
+
+        if (table[key].getData() != null && table[key].searchByValue(stateNumber) != null) {
+            return table[key].searchByValueForState(stateNumber);
+        }
+
+        return "";
+    }
+
+    public Boolean findStateNumber(String stateNumber)  {
+        Integer key = FunctionMiddleOfSquare.getKey(stateNumber, m);
+
+        return table[key].getData() != null && table[key].searchByValue(stateNumber) != null;
+    }
+
     public Integer getKey(RecordReadDto readDto) {
         return FunctionMiddleOfSquare.getKey(readDto.getStateNumber(), m);
     }
@@ -125,9 +142,7 @@ public class HashTable {
 
     public String toString() {
         return "HashTable: filledCells=" + this.filledCells +
-                ", size=" + this.size +
-                ", m=" + this.m +
-                ", table=" + Arrays.toString(this.table) ;
+                ", size=" + this.size;
     }
     public void printTable() {
         System.out.println("HashTable(filledCells=" + this.filledCells +
@@ -142,6 +157,41 @@ public class HashTable {
                 pointer.listPrint();
             }
         }
+    }
+
+    public void printTable(Integer len) {
+        System.out.println("HashTable(filledCells=" + this.filledCells +
+                ", size=" + this.size +
+                ", m=" + this.m + ")");
+        DebugMessage.message += "HashTable(filledCells=" + this.filledCells +
+                ", size=" + this.size +
+                ", m=" + this.m + ")\n";
+        for(DoublePointer pointer : table){
+            int it = 0;
+            if(pointer.getData() == null){
+                for (int i = 0; i < len; i++) {
+
+                    System.out.print("              ");
+                    DebugMessage.message += ">>>>>>>>>>>>>>";
+                }
+                System.out.println("null");
+                DebugMessage.message += "null\n";
+            }
+            else {
+                for (int i = 0; i < len; i++) {
+
+                    System.out.print("              ");
+                    DebugMessage.message += ">>>>>>>>>>>>>>";
+                }
+                System.out.print(pointer.getData().getStateNumber() + " -> ");
+                DebugMessage.message += it + ": " + pointer.getData().getStateNumber() + " -> ";
+                pointer.listPrint();
+
+            }
+            ++it;
+        }
+        System.out.println();
+        DebugMessage.message += "\n";
     }
 
     public void addToDb() {

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
+import spring.ws.carrentaldirectoryweb.core.Hellper.SearchMessage;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.NilNode;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.Node;
@@ -22,7 +24,25 @@ import java.util.List;
 @Getter
 public class RedBlackTree extends Info {
     private Integer hashTableSize;
+    public  void printStruct(Node node, int level) {
 
+        if (node != null) {
+            printStruct(node.right, level + 1);
+            for (int i = 0; i < level; i++) {
+                System.out.print("--------------");
+                DebugMessage.message += "--------------";
+            }
+            if (!node.color) {
+                System.out.print("\033[31m" + node.data + " -> " + "\033[0m" );
+                DebugMessage.message += "RED " + node.data + " -> ";
+                node.hashTable.printTable(level+1);
+            } else {
+                System.out.print(node.data + " -> ");
+                DebugMessage.message += node.data + " -> ";
+                node.hashTable.printTable(level+1);}
+            printStruct(node.left, level + 1);
+        }
+    }
     public void printTree(Node node, int level) {
         if (node != null) {
             printTree(node.right, level + 1);
@@ -46,6 +66,8 @@ public class RedBlackTree extends Info {
         }
     }
 
+
+
     public void addAllRecords(Node node, int level) {
         if (node != null) {
             addAllRecords(node.right, level + 1);
@@ -54,18 +76,20 @@ public class RedBlackTree extends Info {
         }
     }
 
-    public  void printLinesTreeWithPeriodForDate(Node node, int level, LocalDate first, LocalDate second) {
+    public  void printLinesTreeWithPeriodForDate(Node node, String stateNumber, LocalDate first, LocalDate second) {
+        int level = 0;
         if (node != null) {
-            printLinesTreeWithPeriodForDate(node.right, level + 1, first, second);
+            printLinesTreeWithPeriodForDate(node.right, stateNumber, first, second);
 
-            LocalDate nodeDare = node.data;
-            if((nodeDare.isAfter(first) && nodeDare.isBefore(second))
-                    || nodeDare.isEqual(first) || nodeDare.isEqual(second) ) {
-                System.out.print(node.data + " -> \t");
-                node.hashTable.printTable();
+            LocalDate localDate = node.data;
+            if( ((localDate.isAfter(first) && localDate.isBefore(second))
+                    || localDate.isEqual(first) || localDate.isEqual(second))
+                    && node.hashTable.findStateNumber(stateNumber) ) {
+                System.out.println(node.hashTable.returnByStateNumber(stateNumber));
+                SearchMessage.message += node.hashTable.returnByStateNumber(stateNumber) + "\n";
             }
 
-            printLinesTreeWithPeriodForDate(node.left, level + 1, first, second);
+            printLinesTreeWithPeriodForDate(node.left, stateNumber, first, second);
         }
     }
 

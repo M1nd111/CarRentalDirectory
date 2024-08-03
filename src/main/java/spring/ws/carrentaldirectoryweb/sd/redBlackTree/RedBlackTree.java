@@ -29,17 +29,19 @@ public class RedBlackTree extends Info {
         if (node != null) {
             printStruct(node.right, level + 1);
             for (int i = 0; i < level; i++) {
+
                 System.out.print("--------------");
                 DebugMessage.message += "--------------";
             }
             if (!node.color) {
                 System.out.print("\033[31m" + node.data + " -> " + "\033[0m" );
                 DebugMessage.message += "RED " + node.data + " -> ";
-                node.hashTable.printTable(level+1);
+                node.hashTable.printTable(level);
             } else {
                 System.out.print(node.data + " -> ");
                 DebugMessage.message += node.data + " -> ";
-                node.hashTable.printTable(level+1);}
+                node.hashTable.printTable(level);
+            }
             printStruct(node.left, level + 1);
         }
     }
@@ -77,6 +79,7 @@ public class RedBlackTree extends Info {
     }
 
     public  void printLinesTreeWithPeriodForDate(Node node, String stateNumber, LocalDate first, LocalDate second) {
+
         int level = 0;
         if (node != null) {
             printLinesTreeWithPeriodForDate(node.right, stateNumber, first, second);

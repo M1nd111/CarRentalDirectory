@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.core.Hellper.ListToDb;
+import spring.ws.carrentaldirectoryweb.core.Hellper.SearchMessage;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordWebDto;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
@@ -14,29 +15,28 @@ import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTabl
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Component
 public class DoublePointer {
-    @Autowired
-    private  RecordService recordService;
-
-    private DoublePointer previous = null;
-    private DoublePointer next = null;
-
+    private DoublePointer previous;
+    private DoublePointer next;
     @Getter
     @Setter
     private DynamicTableStatus01 data;
-
     @Setter
     private ListInfo list;
-
     @Getter
     private Integer size = 0;
+
+    public DoublePointer() {
+        previous = null;
+        next = null;
+    }
 
 
     public DoublePointer listGet(int DoublePointerNumber) {
         DoublePointer current = list.head;
         for (int i = 0; i < DoublePointerNumber; i++) {
             current = current.next;
+
         }
         return current;
     }
@@ -60,7 +60,7 @@ public class DoublePointer {
         DoublePointer search = null;
 
         while (point != null && !Objects.equals(search != null ? search.data.getLine() : null, line)) {
-            if (Objects.equals(point.data.getStateNumber(), line)) {
+            if (Objects.equals(point.data.getLine(), line)) {
                 search = point;
             }
             point = point.next;
@@ -69,19 +69,6 @@ public class DoublePointer {
         return search;
     }
 
-    public String searchByValueForState(String line) {
-        DoublePointer point = list.head;
-        String search = null;
-
-        while (point != null && !Objects.equals(search, line)) {
-            if (Objects.equals(point.data.getStateNumber(), line)) {
-                search = point.data.getLine();
-            }
-            point = point.next;
-        }
-
-        return search;
-    }
 
     public void addList(DynamicTableStatus01 value) {
         DoublePointer item = new DoublePointer();
@@ -89,26 +76,28 @@ public class DoublePointer {
         item.data = value;
 
         if (list == null || list.head == null || list.head.data == null) {
+
             list.head.data = value;
+
         } else {
             point = list.head;
 
-            if (point.data.getDate().isBefore(item.data.getDate())) {
+//            if (point.data.getDate().isBefore(item.data.getDate())) {
                 item.next = point;
                 point.previous = item;
                 list.head = item;
-            } else {
-                while (point.next != null && item.data.getDate().isBefore(point.next.data.getDate())) {
-                    point = point.next;
-                }
-                if (point.next != null) {
-                    point.next.previous = item;
-                }
-
-                item.next = point.next;
-                point.next = item;
-                item.previous = point;
-            }
+//            } else {
+//                while (point.next != null && item.data.getDate().isBefore(point.next.data.getDate())) {
+//                    point = point.next;
+//                }
+//                if (point.next != null) {
+//                    point.next.previous = item;
+//                }
+//
+//                item.next = point.next;
+//                point.next = item;
+//                item.previous = point;
+//            }
 
             list.tail = list.head;
             while (list.tail.next != null) {
@@ -119,10 +108,12 @@ public class DoublePointer {
         size++;
     }
 
+
     public DoublePointer ListGet(int DoublePointerNumber) {
         DoublePointer current = list.head;
         for (int i = 0; i < DoublePointerNumber; i++) {
             current = current.next;
+
         }
         return current;
     }
@@ -142,13 +133,14 @@ public class DoublePointer {
             numb.previous.next = null;
             list.tail = numb.previous;
         }
+
     }
 
     public boolean listDeleteItem(DynamicTableStatus01 item) {
         String line = item.getLine();
         DoublePointer current = list.head;
-        while (!current.getData().getLine().equals(line)) {
-            if (current.next == null) {
+        while (!current.getData().getLine().equals(line)){
+            if (current.next == null){
                 return false;
             }
             current = current.next;
@@ -166,7 +158,7 @@ public class DoublePointer {
             list.tail = current.previous;
         }
         current = list.head;
-        while (current.next != null) {
+        while(current.next != null){
             current.list = list;
             current = current.next;
         }
@@ -177,17 +169,19 @@ public class DoublePointer {
     public ListInfo listDeleteItem(RecordReadDto item) {
         String line = item.toString();
         DoublePointer current = list.head;
-        while (!current.getData().getLine().equals(line)) {
-            if (current.next == null) {
+        while (!current.getData().getLine().equals(line)){
+            if (current.next == null){
                 return list;
             }
             current = current.next;
         }
-        if (current.previous == null && current.next == null) {
+        if(current.previous == null && current.next == null){
+            current = null;
             list.head = new DoublePointer();
             list.tail = list.head;
             return list;
-        } else if (current.previous == null) {
+        }
+        else if (current.previous == null) {
             list.head = list.head.next;
             if (list.head != null) {
                 list.head.previous = null;
@@ -202,7 +196,7 @@ public class DoublePointer {
 
         current = list.head;
         current.list = list;
-        while (current.next != null) {
+        while(current.next != null){
             current.list = list;
             current = current.next;
         }
@@ -211,8 +205,9 @@ public class DoublePointer {
         return list;
     }
 
+
     public void listDelete() {
-        while (list.head.next != null) {
+        while(list.head.next != null) {
             list.head = list.head.next;
             list.head.next = null;
         }
@@ -221,8 +216,9 @@ public class DoublePointer {
         System.out.println("Список удален");
     }
 
+
     public void listPrint() {
-        if (list == null) {
+        if (list == null){
             System.out.println("Список не инициализирован");
         }
         if (list.head == null) {
@@ -240,6 +236,21 @@ public class DoublePointer {
 
         System.out.println();
         DebugMessage.message += "\n";
+    }
+
+    public String searchByValueForState(String line) {
+        DoublePointer point = list.head;
+        String search = null;
+        SearchMessage.step = 0;
+        while (point != null && !Objects.equals(search, line)) {
+            SearchMessage.step++;
+            if (Objects.equals(point.data.getStateNumber(), line)) {
+                search = point.data.getLine();
+            }
+            point = point.next;
+        }
+
+        return search;
     }
 
     public void addToDbFromList() {

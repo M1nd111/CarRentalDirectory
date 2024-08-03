@@ -166,25 +166,26 @@ public class HashTable {
         DebugMessage.message += "HashTable(filledCells=" + this.filledCells +
                 ", size=" + this.size +
                 ", m=" + this.m + ")\n";
+        int it = 0;
         for(DoublePointer pointer : table){
-            int it = 0;
+
             if(pointer.getData() == null){
                 for (int i = 0; i < len; i++) {
 
                     System.out.print("              ");
-                    DebugMessage.message += ">>>>>>>>>>>>>>";
+                    DebugMessage.message += "--------------";
                 }
-                System.out.println("null");
-                DebugMessage.message += "null\n";
+                System.out.println(it + ":" +"null");
+                DebugMessage.message += it + ":" + "null\n";
             }
             else {
                 for (int i = 0; i < len; i++) {
 
                     System.out.print("              ");
-                    DebugMessage.message += ">>>>>>>>>>>>>>";
+                    DebugMessage.message += "--------------";
                 }
-                System.out.print(pointer.getData().getStateNumber() + " -> ");
-                DebugMessage.message += it + ": " + pointer.getData().getStateNumber() + " -> ";
+                System.out.print(it + ":" + " -> ");
+                DebugMessage.message += it + ":" + " -> ";
                 pointer.listPrint();
 
             }

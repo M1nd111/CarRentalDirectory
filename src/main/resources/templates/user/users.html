@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>АрендАвто</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         body {
             background: url('https://www.funnyart.club/uploads/posts/2021-12/1640206291_44-www-funnyart-club-p-razmitie-foni-s-mashinami-46.jpg') no-repeat center center fixed;
@@ -184,7 +185,9 @@
             height: 100%; /* Измените высоту на 100% */
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
             border-radius: 8px;
-            overflow-y: auto; /* Добавление прокрутки только по вертикали */
+            white-space: nowrap; /* Запрещаем перенос строк */
+            overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+            overflow-y: auto; /* Добавляем вертикальную прокрутку */
         }
 
         .modalSearch {
@@ -589,7 +592,7 @@
     document.getElementById('createTable-button').addEventListener('click', function () {
         var formData = new FormData(document.getElementById('modalCreateForm'));
 
-        fetch('http://localhost:8080/api/users/create', { // Make sure the URL is correct
+        fetch('/api/users/create', { // Make sure the URL is correct
             method: 'POST',
             body: formData
         })
@@ -643,15 +646,16 @@
             .then(data => {
                 if (data.status === 'success') {
                     showNotification('Файл успешно загружен', 'Ваш файл был успешно загружен на сервер.');
+                    updateRecordTable()
                     this.reset();
                 } else {
                     showNotification('Ошибка загрузки файла', data.message);
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Ошибка', 'Произошла ошибка при загрузке файла.');
-            });
+            // .catch(error => {
+            //     console.error('Error:', error);
+            //     showNotification('Ошибка', 'Произошла ошибка при загрузке файла.');
+            // });
     });
 
     function showNotification(title, body) {
@@ -667,30 +671,6 @@
             });
         }
     }
-    document.getElementById('modalFormAdd').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        var formData = new FormData(this);
-
-        fetch('/api/users/add', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    showNotification('Запись успешно добавлена', 'Новая запись была добавлена.');
-                    updateRecordTable(); // Обновляем таблицу
-                    this.reset();
-                } else {
-                    showNotification('Ошибка добавления записи', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Ошибка', 'Произошла ошибка при добавлении записи.');
-            });
-    });
 
     // Обработка добавления
     document.getElementById('modalFormAdd').addEventListener('submit', function(event) {
@@ -777,13 +757,26 @@
     }
 
     document.getElementById("saveButton").addEventListener("click", function() {
+        console.log("Кнопка 'Сохранить файл' нажата");
+
         $.ajax({
             url: '/api/users/export',
             method: 'POST',
             success: function(response) {
-                alert(response);
+                console.log("Ответ сервера: ", response);
+                if (response.startsWith("/api/users/download/")) {
+                    const link = document.createElement("a");
+                    link.href = response;
+                    link.download = "car_records.txt";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert(response);
+                }
             },
             error: function(err) {
+                console.error('Ошибка: ', err.responseText);
                 alert('Ошибка: ' + err.responseText);
             }
         });

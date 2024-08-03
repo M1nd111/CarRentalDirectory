@@ -17,10 +17,10 @@ spring:
         hbm2ddl:
           auto: validate
 
-logging:
-  level:
-    root: info
-  file:
-    name:
-      loggFile
-    path: /
+#logging:
+#  level:
+#    root: info
+#  file:
+#    name:
+#      loggFile
+#    path: /

@@ -29,7 +29,7 @@ class CarRentalDirectoryWebApplicationTests {
 
         RecordReadDto readDto1 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(2024,8,8))
+                .date(LocalDate.of(2023,8,8))
                 .markName("Subaru")
                 .phoneNumber("+79149818482")
                 .stateNumber("A300AB")
@@ -37,7 +37,7 @@ class CarRentalDirectoryWebApplicationTests {
 
         RecordReadDto readDto2 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(2023,2,11))
+                .date(LocalDate.of(2022,2,11))
                 .markName("Subaru")
                 .phoneNumber("+79149818482")
                 .stateNumber("A311BB")
@@ -45,7 +45,7 @@ class CarRentalDirectoryWebApplicationTests {
 
         RecordReadDto readDto3 = RecordReadDto.builder()
                 .id(1)
-                .date(LocalDate.of(2022,12,12))
+                .date(LocalDate.of(2021,12,12))
                 .markName("Subaru")
                 .phoneNumber("+79149818482")
                 .stateNumber("A311CC")
@@ -66,8 +66,10 @@ class CarRentalDirectoryWebApplicationTests {
         redBlackTree.insertNode(readDto);
         redBlackTree.insertNode(readDto1);
         redBlackTree.insertNode(readDto2);
-        redBlackTree.insertNode(readDto3);
-        redBlackTree.insertNode(readDto4);
+        readDto2.setStateNumber("A311BA");
+        redBlackTree.insertNode(readDto2);
+//        redBlackTree.insertNode(readDto3);
+//        redBlackTree.insertNode(readDto4);
 
 
         System.out.println("\n\n");
@@ -81,7 +83,7 @@ class CarRentalDirectoryWebApplicationTests {
         redBlackTree.printLinesTreeWithPeriodForDate(Info.root, "A300AB",
                 LocalDate.of(2024,1,1), LocalDate.of(2024,12,12));
 
-//        redBlackTree.deleteNode(readDto);
+        redBlackTree.deleteNode(readDto);
 //        redBlackTree.deleteNode(readDto1);
 //        redBlackTree.deleteNode(readDto2);
 //

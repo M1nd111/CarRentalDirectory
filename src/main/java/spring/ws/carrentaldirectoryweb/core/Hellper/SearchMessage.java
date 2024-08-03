@@ -2,6 +2,7 @@ package spring.ws.carrentaldirectoryweb.core.Hellper;
 
 public class SearchMessage {
     public static String message;
+    public static Integer step;
 
     public SearchMessage() {
         message = "";

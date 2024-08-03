@@ -1,10 +1,15 @@
 package spring.ws.carrentaldirectoryweb.http.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +30,7 @@ import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,7 +87,7 @@ public class UserRestController {
 
         try {
             // Ваш метод debug, который возвращает результат
-            String result = searchMessage.getString();
+            String result = searchMessage.getString() + "\n\nШагов поиска: " + SearchMessage.step;
             response.put("status", "success");
             response.put("result", result);
         } catch (Exception e) {
@@ -122,19 +128,11 @@ public class UserRestController {
     }
 
     @PostMapping("/add")
-    public String add(@RequestParam("stateNumber") String stateNumber,
-                      @RequestParam("phoneNumber") String phoneNumber,
-                      @RequestParam("markName") String markName,
-                      @RequestParam("date") LocalDate date,
+    public String add(@Valid @ModelAttribute RecordReadDto recordReadDto,
                       HttpSession session){
         var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
-        redBlackTree.insertNode(RecordReadDto.builder()
-                .id(0)
-                .stateNumber(stateNumber)
-                .phoneNumber(phoneNumber)
-                .markName(markName)
-                .date(date)
-                .build());
+        recordReadDto.setId(0);
+        redBlackTree.insertNode(recordReadDto);
         session.setAttribute("redBlackTree", redBlackTree);
         redBlackTree.printLinesTree(Info.root, 0);
         logger.info("RB HT SIZE: {}", redBlackTree.getHashTableSize());
@@ -166,11 +164,11 @@ public class UserRestController {
     public ResponseEntity<Map<String, Object>> uploadFile(@RequestParam("file") MultipartFile file, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-//        if (file.isEmpty()) {
-//            response.put("status", "error");
-//            response.put("message", "Файл пустой");
-//            return ResponseEntity.badRequest().body(response);
-//        }
+        if (file.isEmpty()) {
+            response.put("status", "error");
+            response.put("message", "Файл пустой");
+            return ResponseEntity.badRequest().body(response);
+        }
 
         try {
             List<RecordReadDto> records = new ArrayList<>();
@@ -180,15 +178,15 @@ public class UserRestController {
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
-                if (parts.length != 5) {
+                if (parts.length != 4) {
                     // Обработка некорректных строк
                     continue;
                 }
 
                 String stateNumber = parts[0];
                 String phoneNumber = parts[1];
-                String markName = parts[2] + " " + parts[3];
-                LocalDate date = LocalDate.parse(parts[4], formatter);
+                String markName = parts[2];
+                LocalDate date = LocalDate.parse(parts[3], formatter);
 
                 RecordReadDto record = RecordReadDto.builder()
                         .id(0)
@@ -222,7 +220,7 @@ public class UserRestController {
     }
     @PostMapping("/export")
     public ResponseEntity<String> exportData(HttpSession session) {
-        String downloadsPath = "C:/Users/maks_/OneDrive/Рабочий стол";
+        String downloadsPath = "C:/Users/maks_/OneDrive/Рабочий стол/";
         String fileName = "car_records.txt";
 
         try {
@@ -244,9 +242,31 @@ public class UserRestController {
             Path filePath = Paths.get(downloadsPath + fileName);
             Files.writeString(filePath, fileContent.toString());
 
-            return ResponseEntity.ok("Файл успешно сохранен: " + filePath.toString());
+            // Формируем ссылку для скачивания
+            String downloadLink = "/api/users/download/" + fileName;
+
+            return ResponseEntity.ok(downloadLink);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка при сохранении файла: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
+        try {
+            Path filePath = Paths.get("C:/Users/maks_/OneDrive/Рабочий стол/" + fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

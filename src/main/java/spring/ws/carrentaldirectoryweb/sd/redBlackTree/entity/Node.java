@@ -1,6 +1,6 @@
 package spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity;
 
-import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.HashService.HashTable;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 
@@ -16,7 +16,7 @@ public class Node {
     public boolean color; // красный - false, черный - true
 
 
-    public Node(RecordReadDto readDto, Integer hashTableSize){
+    public Node(RecordsReadDto readDto, Integer hashTableSize){
         HashTable hashTable1 = new HashTable(hashTableSize);
         DynamicTableStatus01 dynamicTableStatus01 = new DynamicTableStatus01(readDto.toString(), readDto.getId());
         hashTable1.put(readDto.getStateNumber(), dynamicTableStatus01);

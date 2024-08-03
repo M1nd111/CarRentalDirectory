@@ -11,17 +11,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.multipart.MultipartFile;
 import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.core.Hellper.ListToDb;
 import spring.ws.carrentaldirectoryweb.core.Hellper.SearchMessage;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordWebDto;
-import spring.ws.carrentaldirectoryweb.core.entity.RecordEntity;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsWebDto;
 import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
@@ -55,15 +51,15 @@ public class UserRestController {
     RecordRepository recordRepository;
 
     @GetMapping("/all")
-    public List<RecordReadDto> getAllRecords(HttpSession session) {
+    public List<RecordsReadDto> getAllRecords(HttpSession session) {
         ListToDb list = new ListToDb();
         list.clearList();
         recordService.delAll();
         var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
         redBlackTree.addAllRecords(Info.root, 0);
 
-        for(RecordWebDto recordWebDto : ListToDb.list){
-            recordService.addEntity(recordWebDto);
+        for(RecordsWebDto recordsWebDto : ListToDb.list){
+            recordService.addEntity(recordsWebDto);
         }
 
         return recordService.findAll(); // Реализуйте метод для получения всех записей
@@ -128,7 +124,7 @@ public class UserRestController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute RecordReadDto recordReadDto,
+    public String add(@Valid @ModelAttribute RecordsReadDto recordReadDto,
                       HttpSession session){
         var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
         recordReadDto.setId(0);
@@ -147,7 +143,7 @@ public class UserRestController {
                          HttpSession session){
         var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
 
-        redBlackTree.deleteNode(RecordReadDto.builder()
+        redBlackTree.deleteNode(RecordsReadDto.builder()
                 .id(0)
                 .stateNumber(stateNumber)
                 .phoneNumber(phoneNumber)
@@ -171,7 +167,7 @@ public class UserRestController {
         }
 
         try {
-            List<RecordReadDto> records = new ArrayList<>();
+            List<RecordsReadDto> records = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
             String line;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -188,7 +184,7 @@ public class UserRestController {
                 String markName = parts[2];
                 LocalDate date = LocalDate.parse(parts[3], formatter);
 
-                RecordReadDto record = RecordReadDto.builder()
+                RecordsReadDto record = RecordsReadDto.builder()
                         .id(0)
                         .stateNumber(stateNumber)
                         .phoneNumber(phoneNumber)
@@ -201,13 +197,13 @@ public class UserRestController {
 
             // Добавление записей в redBlackTree
             var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
-            for (RecordReadDto record : records) {
+            for (RecordsReadDto record : records) {
                 redBlackTree.insertNode(record);
             }
             session.setAttribute("redBlackTree", redBlackTree);
 
             // Обновление данных
-            List<RecordReadDto> allRecords = getAllRecords(session);
+            List<RecordsReadDto> allRecords = getAllRecords(session);
             response.put("status", "success");
             response.put("message", "Файл успешно загружен и обработан");
             response.put("data", allRecords);
@@ -224,10 +220,10 @@ public class UserRestController {
         String fileName = "car_records.txt";
 
         try {
-            List<RecordReadDto> records = recordService.findAll();
+            List<RecordsReadDto> records = recordService.findAll();
             StringBuilder fileContent = new StringBuilder();
 
-            for (RecordReadDto record : records) {
+            for (RecordsReadDto record : records) {
                 fileContent.append(record.getStateNumber())
                         .append(" ")
                         .append(record.getPhoneNumber())

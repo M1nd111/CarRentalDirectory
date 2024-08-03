@@ -1,10 +1,9 @@
 package spring.ws.carrentaldirectoryweb.core.dto;
 
-
 import lombok.*;
 
 import java.time.LocalDate;
-
+import java.time.Year;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,13 +12,8 @@ import java.time.LocalDate;
 @Setter
 @Data
 public class RecordInputDto {
+    private String modelName;
     private String stateNumber;
-    private String phoneNumber;
-    private String markName;
     private LocalDate date;
-
-    public String toString(){
-        return this.stateNumber + " " + this.getPhoneNumber() + " " + this.markName + " " + this.date;
-    }
-
+    private Year year;
 }

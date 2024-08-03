@@ -3,20 +3,17 @@ package spring.ws.carrentaldirectoryweb.sd.redBlackTree;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.core.Hellper.SearchMessage;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.NilNode;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.entity.Node;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -168,7 +165,7 @@ public class RedBlackTree extends Info {
         return null;
     }
 
-    public void insertNode(RecordReadDto readDto) {
+    public void insertNode(RecordsReadDto readDto) {
         Node node = root;
         LocalDate key = readDto.getDate();
         Node parent = null;
@@ -296,7 +293,7 @@ public class RedBlackTree extends Info {
         return node;
     }
 
-    public void deleteNode(RecordReadDto readDto) {
+    public void deleteNode(RecordsReadDto readDto) {
         Node node = root;
 
         while(node != null ) {
@@ -486,7 +483,7 @@ public class RedBlackTree extends Info {
 
     }
 
-    public String findRecord(RecordReadDto readDto) {
+    public String findRecord(RecordsReadDto readDto) {
 
         Node node = root;
         while(node != null) {

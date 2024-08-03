@@ -3,7 +3,7 @@ package spring.ws.carrentaldirectoryweb;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ class CarRentalDirectoryWebApplicationTests {
         Integer hashTableSize = 3;
         RedBlackTree redBlackTree = new RedBlackTree(hashTableSize);
 
-        RecordReadDto readDto = RecordReadDto.builder()
+        RecordsReadDto readDto = RecordsReadDto.builder()
                 .id(1)
                 .date(LocalDate.of(2024,7,30))
                 .markName("Subaru")
@@ -27,7 +27,7 @@ class CarRentalDirectoryWebApplicationTests {
                 .stateNumber("A300BB")
                 .build();
 
-        RecordReadDto readDto1 = RecordReadDto.builder()
+        RecordsReadDto readDto1 = RecordsReadDto.builder()
                 .id(1)
                 .date(LocalDate.of(2023,8,8))
                 .markName("Subaru")
@@ -35,7 +35,7 @@ class CarRentalDirectoryWebApplicationTests {
                 .stateNumber("A300AB")
                 .build();
 
-        RecordReadDto readDto2 = RecordReadDto.builder()
+        RecordsReadDto readDto2 = RecordsReadDto.builder()
                 .id(1)
                 .date(LocalDate.of(2022,2,11))
                 .markName("Subaru")
@@ -43,7 +43,7 @@ class CarRentalDirectoryWebApplicationTests {
                 .stateNumber("A311BB")
                 .build();
 
-        RecordReadDto readDto3 = RecordReadDto.builder()
+        RecordsReadDto readDto3 = RecordsReadDto.builder()
                 .id(1)
                 .date(LocalDate.of(2021,12,12))
                 .markName("Subaru")
@@ -51,7 +51,7 @@ class CarRentalDirectoryWebApplicationTests {
                 .stateNumber("A311CC")
                 .build();
 
-        RecordReadDto readDto4 = RecordReadDto.builder()
+        RecordsReadDto readDto4 = RecordsReadDto.builder()
                 .id(1)
                 .date(LocalDate.of(2024,11,11))
                 .markName("Subaru")

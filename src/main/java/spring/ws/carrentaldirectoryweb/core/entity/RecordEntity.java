@@ -7,28 +7,33 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Year;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "records")
+@Table(name = "record")
 public class RecordEntity implements BaseEntity<Integer> {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "state_number")
-    private String stateNumber;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "mark_name")
-    private String markName;
+    @Column(name = "model_name")
+    private String modelName;
 
     @Column(name = "date")
     private LocalDate date;
+
+    @Column(name = "state_number")
+    private String stateNumber;
+
+    @Column(name = "year")
+    private Year year;
+
+    @ManyToOne
+    @JoinColumn(name = "records_id")
+    private RecordEntity records;
 }

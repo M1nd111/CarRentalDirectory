@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.functions.FunctionMiddleOfSquare;
 import spring.ws.carrentaldirectoryweb.sd.list.DoublePointer;
-
-import java.util.Arrays;
 
 @Component
 @NoArgsConstructor
@@ -101,7 +98,7 @@ public class HashTable {
         return -1;
     }
 
-    public DoublePointer find(RecordReadDto readDto) {
+    public DoublePointer find(RecordsReadDto readDto) {
         Integer key = FunctionMiddleOfSquare.getKey(readDto.getStateNumber(), m);
 
         if (table[key].getData() != null && table[key].searchByValue(readDto.toString()) != null) {
@@ -127,7 +124,7 @@ public class HashTable {
         return table[key].getData() != null && table[key].searchByValue(stateNumber) != null;
     }
 
-    public Integer getKey(RecordReadDto readDto) {
+    public Integer getKey(RecordsReadDto readDto) {
         return FunctionMiddleOfSquare.getKey(readDto.getStateNumber(), m);
     }
 

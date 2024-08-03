@@ -2,12 +2,14 @@ package spring.ws.carrentaldirectoryweb.core.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordInputDto;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordWebDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsWebDto;
 import spring.ws.carrentaldirectoryweb.core.entity.RecordEntity;
+import spring.ws.carrentaldirectoryweb.core.entity.RecordsEntity;
 import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
 
 import java.util.List;
@@ -23,29 +25,29 @@ public class RecordService {
 
         return recordRepository.findAll().stream().map(recordEntity -> RecordReadDto.builder()
                 .id(recordEntity.getId())
-                .stateNumber(recordEntity.getStateNumber())
-                .phoneNumber(recordEntity.getPhoneNumber())
-                .markName(recordEntity.getMarkName())
+                .model_name(recordEntity.getModelName())
                 .date(recordEntity.getDate())
+                .stateNumber(recordEntity.getStateNumber())
+                .year(recordEntity.getYear())
                 .build()).collect(Collectors.toList());
     }
 
-    public Boolean dellEntity(RecordWebDto recordWebDto) {
+    public Boolean dellEntity(RecordInputDto RecordInputDto) {
         recordRepository.save(RecordEntity.builder()
-                        .stateNumber(recordWebDto.getStateNumber())
-                        .phoneNumber(recordWebDto.getPhoneNumber())
-                        .markName(recordWebDto.getMarkName())
-                        .date(recordWebDto.getDate())
+                        .stateNumber(RecordInputDto.getStateNumber())
+                        .modelName(RecordInputDto.getModelName())
+                        .date(RecordInputDto.getDate())
+                        .year(RecordInputDto.getYear())
                 .build());
         return true;
     }
 
-    public Boolean addEntity(RecordWebDto recordWebDto) {
+    public Boolean addEntity(RecordInputDto recordInputDto) {
         recordRepository.save(RecordEntity.builder()
-                    .stateNumber(recordWebDto.getStateNumber())
-                    .phoneNumber(recordWebDto.getPhoneNumber())
-                    .markName(recordWebDto.getMarkName())
-                    .date(recordWebDto.getDate())
+                    .stateNumber(recordInputDto.getStateNumber())
+                    .year(recordInputDto.getYear())
+                    .modelName(recordInputDto.getModelName())
+                    .date(recordInputDto.getDate())
                 .build());
         return true;
     }

@@ -1,15 +1,12 @@
 package spring.ws.carrentaldirectoryweb.sd.list;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import spring.ws.carrentaldirectoryweb.core.Hellper.DebugMessage;
 import spring.ws.carrentaldirectoryweb.core.Hellper.ListToDb;
 import spring.ws.carrentaldirectoryweb.core.Hellper.SearchMessage;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordWebDto;
-import spring.ws.carrentaldirectoryweb.core.service.RecordService;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsWebDto;
 import spring.ws.carrentaldirectoryweb.sd.list.info.ListInfo;
-import spring.ws.carrentaldirectoryweb.core.dto.RecordReadDto;
+import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
 import spring.ws.carrentaldirectoryweb.sd.hashTable.hash.TableEntity.DynamicTableStatus01;
 
 import java.time.LocalDate;
@@ -166,7 +163,7 @@ public class DoublePointer {
         return true;
     }
 
-    public ListInfo listDeleteItem(RecordReadDto item) {
+    public ListInfo listDeleteItem(RecordsReadDto item) {
         String line = item.toString();
         DoublePointer current = list.head;
         while (!current.getData().getLine().equals(line)){
@@ -270,7 +267,7 @@ public class DoublePointer {
             String[] time = line[3].split("-");
             LocalDate localDate = LocalDate.of(Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2]));
 
-            RecordWebDto readDto = RecordWebDto.builder()
+            RecordsWebDto readDto = RecordsWebDto.builder()
                     .stateNumber(line[0])
                     .phoneNumber(line[1])
                     .markName(line[2])

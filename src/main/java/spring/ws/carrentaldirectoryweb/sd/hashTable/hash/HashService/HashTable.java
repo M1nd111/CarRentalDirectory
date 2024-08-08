@@ -99,7 +99,7 @@ public class HashTable {
     }
 
     public DoublePointer find(RecordsReadDto readDto) {
-        Integer key = FunctionMiddleOfSquare.getKey(readDto.getStateNumber(), m);
+        Integer key = FunctionMiddleOfSquare.getKey(readDto.getMarkName(), m);
 
         if (table[key].getData() != null && table[key].searchByValue(readDto.toString()) != null) {
             return table[key];
@@ -108,24 +108,27 @@ public class HashTable {
         return new DoublePointer();
     }
 
-    public String returnByStateNumber(String stateNumber)  {
-        Integer key = FunctionMiddleOfSquare.getKey(stateNumber, m);
+    public String returnByMarkName(String markName)  {
+        Integer key = FunctionMiddleOfSquare.getKey(markName, m);
 
-        if (table[key].getData() != null && table[key].searchByValue(stateNumber) != null) {
-            return table[key].searchByValueForState(stateNumber);
+        if (table[key].getData() != null && table[key].searchByValue(markName) != null) {
+            return table[key].searchByValueForMark(markName);
         }
 
         return "";
     }
 
-    public Boolean findStateNumber(String stateNumber)  {
-        Integer key = FunctionMiddleOfSquare.getKey(stateNumber, m);
+    public Boolean findMarkName(String markName)  {
+        Integer key = FunctionMiddleOfSquare.getKey(markName, m);
 
-        return table[key].getData() != null && table[key].searchByValue(stateNumber) != null;
+        for (int i = 0; i < this.size; i++) {
+            if(table[key].getData() != null && table[key].searchByValue(markName) != null) return true;
+        }
+        return false;
     }
 
     public Integer getKey(RecordsReadDto readDto) {
-        return FunctionMiddleOfSquare.getKey(readDto.getStateNumber(), m);
+        return FunctionMiddleOfSquare.getKey(readDto.getMarkName(), m);
     }
 
     public void printToConsole() {

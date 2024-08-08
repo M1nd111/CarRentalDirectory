@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @Data
 public class RecordsReadDto {
     private Integer id;
-    @Pattern(regexp = "^[A-ZА-Я]{1}[0-9]{3}[A-ZА-Я]{2}$", message = "Некорректный госномер")
-    @Size(min = 6, max = 6, message = "Госномер должен быть длиной 6 символов")
+//    @Pattern(regexp = "^[A-ZА-Я]{1}[0-9]{3}[A-ZА-Я]{2}$", message = "Некорректный госномер")
+//    @Size(min = 6, max = 6, message = "Госномер должен быть длиной 6 символов")
     private String fio;
 
     @Pattern(regexp = "^\\+7[0-9]{10}$", message = "Некорректный номер телефона")

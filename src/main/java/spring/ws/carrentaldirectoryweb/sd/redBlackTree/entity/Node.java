@@ -19,8 +19,8 @@ public class Node {
     public Node(RecordsReadDto readDto, Integer hashTableSize){
         HashTable hashTable1 = new HashTable(hashTableSize);
         DynamicTableStatus01 dynamicTableStatus01 = new DynamicTableStatus01(readDto.toString(), readDto.getId());
-        hashTable1.put(readDto.getStateNumber(), dynamicTableStatus01);
-        this.data = readDto.getDate();
+        hashTable1.put(readDto.getMarkName(), dynamicTableStatus01);
+        this.data = readDto.getFirst_date();
         this.hashTable = hashTable1;
     }
 

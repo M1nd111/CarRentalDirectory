@@ -235,7 +235,7 @@ public class DoublePointer {
         DebugMessage.message += "\n";
     }
 
-    public String searchByValueForState(String line) {
+    public String searchByValueForMark(String line) {
         DoublePointer point = list.head;
         String search = null;
         SearchMessage.step = 0;
@@ -264,14 +264,17 @@ public class DoublePointer {
 
         while (current != null) {
             String[] line = current.getData().getAllPartsLine();
-            String[] time = line[3].split("-");
-            LocalDate localDate = LocalDate.of(Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2]));
+            String[] time1 = line[5].split("-");
+            LocalDate localDate1 = LocalDate.of(Integer.parseInt(time1[0]), Integer.parseInt(time1[1]), Integer.parseInt(time1[2]));
+            String[] time2 = line[6].split("-");
+            LocalDate localDate2 = LocalDate.of(Integer.parseInt(time2[0]), Integer.parseInt(time2[1]), Integer.parseInt(time2[2]));
 
             RecordsWebDto readDto = RecordsWebDto.builder()
-                    .stateNumber(line[0])
-                    .phoneNumber(line[1])
-                    .markName(line[2])
-                    .date(localDate)
+                    .fio(line[0] + " " + line[1] + " " +line[2])
+                    .phoneNumber(line[3])
+                    .markName(line[4])
+                    .firsDate(localDate1)
+                    .lastDate(localDate2)
                     .build();
 
             ListToDb.list.add(readDto);

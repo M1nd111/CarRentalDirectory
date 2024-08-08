@@ -75,21 +75,21 @@ public class RedBlackTree extends Info {
         }
     }
 
-    public  void printLinesTreeWithPeriodForDate(Node node, String stateNumber, LocalDate first, LocalDate second) {
+    public  void printLinesTreeWithPeriodForDate(Node node, String markName, LocalDate first, LocalDate second) {
 
         int level = 0;
         if (node != null) {
-            printLinesTreeWithPeriodForDate(node.right, stateNumber, first, second);
+            printLinesTreeWithPeriodForDate(node.right, markName, first, second);
 
             LocalDate localDate = node.data;
             if( ((localDate.isAfter(first) && localDate.isBefore(second))
                     || localDate.isEqual(first) || localDate.isEqual(second))
-                    && node.hashTable.findStateNumber(stateNumber) ) {
-                System.out.println(node.hashTable.returnByStateNumber(stateNumber));
-                SearchMessage.message += node.hashTable.returnByStateNumber(stateNumber) + "\n";
+                    && node.hashTable.findMarkName(markName) ) {
+                System.out.println(node.hashTable.returnByMarkName(markName));
+                SearchMessage.message += node.hashTable.returnByMarkName(markName) + "\n";
             }
 
-            printLinesTreeWithPeriodForDate(node.left, stateNumber, first, second);
+            printLinesTreeWithPeriodForDate(node.left, markName, first, second);
         }
     }
 
@@ -167,7 +167,7 @@ public class RedBlackTree extends Info {
 
     public void insertNode(RecordsReadDto readDto) {
         Node node = root;
-        LocalDate key = readDto.getDate();
+        LocalDate key = readDto.getFirst_date();
         Node parent = null;
         boolean dublicate = false;
 
@@ -178,7 +178,7 @@ public class RedBlackTree extends Info {
             } else if(key.isAfter(node.data)) {
                 node = node.right;
             } else {
-                node.hashTable.put(readDto.getStateNumber(),
+                node.hashTable.put(readDto.getMarkName(),
                         DynamicTableStatus01.builder().id(readDto.getId()).line(readDto.toString()).build());
                 System.out.println("already contains a node with key " + key);
                 dublicate = true;
@@ -297,7 +297,7 @@ public class RedBlackTree extends Info {
         Node node = root;
 
         while(node != null ) {
-            if(!node.data.isAfter(readDto.getDate()) && !readDto.getDate().isAfter(node.data)) {
+            if(!node.data.isAfter(readDto.getFirst_date()) && !readDto.getFirst_date().isAfter(node.data)) {
                 if(node.hashTable.find(readDto).searchByValue(readDto.toString()).getData()
                         .getLine().equals(readDto.toString())) {
                     ListInfo list =
@@ -308,7 +308,7 @@ public class RedBlackTree extends Info {
                     break;
                 }
             }
-            if(node.data.isAfter(readDto.getDate())){
+            if(node.data.isAfter(readDto.getFirst_date())){
                 node = node.left;
             }
             else {
@@ -487,14 +487,14 @@ public class RedBlackTree extends Info {
 
         Node node = root;
         while(node != null) {
-            if (node.data.equals(readDto.getDate())) {
+            if (node.data.equals(readDto.getFirst_date())) {
 
 
 
                 return node.hashTable.find(readDto).searchByValue(readDto.toString()).toString();
-            } else if (node.data.isAfter(readDto.getDate())) {
+            } else if (node.data.isAfter(readDto.getFirst_date())) {
                 node = node.left;
-            } else if (readDto.getDate().isAfter(node.data)) {
+            } else if (readDto.getFirst_date().isAfter(node.data)) {
                 node = node.right;
             }
         }
@@ -502,47 +502,3 @@ public class RedBlackTree extends Info {
         return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

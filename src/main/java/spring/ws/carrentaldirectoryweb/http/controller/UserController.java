@@ -10,13 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
+import spring.ws.carrentaldirectoryweb.core.service.RecordsService;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    RecordService recordService;
+    RecordsService recordsService;
     @Autowired
     RecordRepository recordRepository;
 
@@ -24,7 +25,7 @@ public class UserController {
 
     @GetMapping
     public String findAll(Model model, HttpSession httpSession){
-        var records =  recordService.findAll();
+        var records =  recordsService.findAll();
         model.addAttribute("records", records);
         return "user/users";
     }

@@ -31,9 +31,9 @@ public class RecordEntity implements BaseEntity<Integer> {
     private String stateNumber;
 
     @Column(name = "year")
-    private Year year;
+    private Integer year;
 
     @ManyToOne
     @JoinColumn(name = "records_id")
-    private RecordEntity records;
+    private RecordsEntity records;
 }

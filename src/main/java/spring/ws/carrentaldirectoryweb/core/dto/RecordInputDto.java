@@ -15,5 +15,5 @@ public class RecordInputDto {
     private String modelName;
     private String stateNumber;
     private LocalDate date;
-    private Year year;
+    private Integer year;
 }

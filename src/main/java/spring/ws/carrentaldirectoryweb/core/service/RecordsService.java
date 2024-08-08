@@ -36,8 +36,8 @@ public class RecordsService {
                 .fio(recordsWebDto.getFio())
                 .phoneNumber(recordsWebDto.getPhoneNumber())
                 .markName(recordsWebDto.getMarkName())
-                .firstDate(recordsWebDto.getFirst_date())
-                .lastDate(recordsWebDto.getLast_date())
+                .firstDate(recordsWebDto.getFirsDate())
+                .lastDate(recordsWebDto.getLastDate())
                 .build());
         return true;
     }
@@ -47,8 +47,8 @@ public class RecordsService {
                 .fio(recordsWebDto.getFio())
                 .phoneNumber(recordsWebDto.getPhoneNumber())
                 .markName(recordsWebDto.getMarkName())
-                .firstDate(recordsWebDto.getFirst_date())
-                .lastDate(recordsWebDto.getLast_date())
+                .firstDate(recordsWebDto.getFirsDate())
+                .lastDate(recordsWebDto.getLastDate())
                 .build());
         return true;
     }

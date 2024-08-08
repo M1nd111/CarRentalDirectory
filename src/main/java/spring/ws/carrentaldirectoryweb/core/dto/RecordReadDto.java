@@ -27,7 +27,7 @@ public class RecordReadDto {
     @FutureOrPresent(message = "Дата не может быть меньше текущей")
     private LocalDate date;
 
-    private Year year;
+    private Integer year;
     @Override
     public String toString() {
         return this.stateNumber + " " + this.model_name + " " + this.date + " " + this.year;

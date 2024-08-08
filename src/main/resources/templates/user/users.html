@@ -295,7 +295,7 @@
         }
         /* Стили для формы */
         .form-container {
-            width: 600px;
+            width: 750px;
             height: 400px;
             overflow-y: scroll;
             overflow-x: hidden;
@@ -373,8 +373,9 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form id="search-form" class="modal-form">
-            <label for="state-number">Госномер</label>
-            <input type="text" id="state-number" name="stateNumber" placeholder="A000AA" required>
+
+            <label for="mark-name">Марка машины</label>
+            <input type="text" id="mark-name" name="markName" placeholder="Subaru" required>
 
             <label>Период аренды от</label>
             <div>
@@ -392,8 +393,8 @@
     <div class="modalAdd-content">
         <span class="closeAdd">&times;</span>
         <form id="modalFormAdd" name="entity" class="modal-form" th:action="@{/api/users/add}" method="post">
-            <label for="state-numberAdd">Госномер</label>
-            <input type="text" id="state-numberAdd" name="stateNumber" placeholder="A000AA" required>
+            <label for="fioAdd">ФИО</label>
+            <input type="text" id="fioAdd" name="fio" required>
 
             <label for="phone-numberAdd">Номер телефона</label>
             <input type="text" id="phone-numberAdd" name="phoneNumber" placeholder="+7*** *** ****"  required>
@@ -401,8 +402,11 @@
             <label for="brandAdd">Марка машины</label>
             <input type="text" id="brandAdd" name="markName" placeholder="Subaru" required>
 
-            <label for="dateAdd">Дата</label>
-            <input type="date" id="dateAdd" name="date" required>
+            <label for="dateAddFirst">Дата с</label>
+            <input type="date" id="dateAddFirst" name="first_date" required>
+
+            <label for="dateAddLast">Дата по</label>
+            <input type="date" id="dateAddLast" name="last_date" required>
 
             <button type="submit">Подтвердить</button>
         </form>
@@ -413,8 +417,8 @@
     <div class="modalDell-content">
         <span class="closeDell">&times;</span>
         <form id="modalFormDell" name="entity" class="modal-form" th:action="@{/api/users/dell}" method="post">
-            <label for="state-numberDell">Госномер</label>
-            <input type="text" id="state-numberDell" name="stateNumber" placeholder="A000AA" required>
+            <label for="fioDell">ФИО</label>
+            <input type="text" id="fioDell" name="fio"  required>
 
             <label for="phone-numberDell">Номер телефона</label>
             <input type="text" id="phone-numberDell" name="phoneNumber" placeholder="+7*** *** ****"  required>
@@ -422,8 +426,11 @@
             <label for="brandDell">Марка машины</label>
             <input type="text" id="brandDell" name="markName" placeholder="Subaru" required>
 
-            <label for="dateDell">Дата</label>
-            <input type="date" id="dateDell" name="date" required>
+            <label for="dateDellFirst">Дата с</label>
+            <input type="date" id="dateDellFirst" name="first_date" required>
+
+            <label for="dateDellLast">Дата по</label>
+            <input type="date" id="dateDellLast" name="last_date" required>
 
             <button type="submit">Подтвердить</button>
         </form>
@@ -434,16 +441,18 @@
     <form id="rental-list" class="form-container">
         <table class="record-table">
             <tr class="table-header">
-                <th>State Number</th>
+                <th>FIO</th>
                 <th>Phone Number</th>
                 <th>Mark Name</th>
-                <th>Date</th>
+                <th>First date</th>
+                <th>Last date</th>
             </tr>
             <tr th:each="record : ${records}">
-                <td th:text="${record.stateNumber}"></td>
+                <td th:text="${record.fio}"></td>
                 <td th:text="${record.phoneNumber}"></td>
                 <td th:text="${record.markName}"></td>
-                <td th:text="${record.date}"></td>
+                <td th:text="${record.first_date}"></td>
+                <td th:text="${record.last_date}"></td>
             </tr>
         </table>
     </form>
@@ -733,20 +742,22 @@
 
                 const row1 = document.createElement('tr');
                 row1.innerHTML = `
-                    <th>State Number</th>
+                    <th>FIO</th>
                     <th>Phone Number</th>
                     <th>Mark Name</th>
-                    <th>Date</th>
+                    <th>First date</th>
+                    <th>Last date</th>
              `;
                 tableBody.appendChild(row1)
 
                 records.forEach(record => {
                     const row2 = document.createElement('tr');
                     row2.innerHTML = `
-                    <td>${record.stateNumber}</td>
+                    <td>${record.fio}</td>
                     <td>${record.phoneNumber}</td>
                     <td>${record.markName}</td>
-                    <td>${record.date}</td>
+                    <td>${record.first_date}</td>
+                    <td>${record.last_date}</td>
              `;
                     tableBody.appendChild(row2);
                 });

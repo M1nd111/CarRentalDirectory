@@ -19,7 +19,9 @@ import spring.ws.carrentaldirectoryweb.core.Hellper.SearchMessage;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordsReadDto;
 import spring.ws.carrentaldirectoryweb.core.dto.RecordsWebDto;
 import spring.ws.carrentaldirectoryweb.core.repository.RecordRepository;
+import spring.ws.carrentaldirectoryweb.core.repository.RecordsRepository;
 import spring.ws.carrentaldirectoryweb.core.service.RecordService;
+import spring.ws.carrentaldirectoryweb.core.service.RecordsService;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.RedBlackTree;
 import spring.ws.carrentaldirectoryweb.sd.redBlackTree.info.Info;
 
@@ -46,27 +48,27 @@ public class UserRestController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    RecordService recordService;
+    RecordsService recordsService;
     @Autowired
-    RecordRepository recordRepository;
+    RecordsRepository recordRepository;
 
     @GetMapping("/all")
     public List<RecordsReadDto> getAllRecords(HttpSession session) {
         ListToDb list = new ListToDb();
         list.clearList();
-        recordService.delAll();
+        recordsService.delAll();
         var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
         redBlackTree.addAllRecords(Info.root, 0);
 
         for(RecordsWebDto recordsWebDto : ListToDb.list){
-            recordService.addEntity(recordsWebDto);
+            recordsService.addEntity(recordsWebDto);
         }
 
-        return recordService.findAll(); // Реализуйте метод для получения всех записей
+        return recordsService.findAll(); // Реализуйте метод для получения всех записей
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Map<String, Object>> search(@RequestParam("stateNumber") String stateNumber,
+    public ResponseEntity<Map<String, Object>> search(@RequestParam("markName") String markName,
                                                       @RequestParam("startDate") LocalDate startDate,
                                                       @RequestParam("endDate") LocalDate endDate,
                                                       HttpSession session) {
@@ -79,7 +81,7 @@ public class UserRestController {
         searchMessage.clearMessage();
         searchMessage = new SearchMessage();
 
-        redBlackTree.printLinesTreeWithPeriodForDate(Info.root, stateNumber, startDate, endDate);
+        redBlackTree.printLinesTreeWithPeriodForDate(Info.root, markName, startDate, endDate);
 
         try {
             // Ваш метод debug, который возвращает результат
@@ -136,19 +138,21 @@ public class UserRestController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("stateNumber") String stateNumber,
+    public String delete(@RequestParam("fio") String fio,
                          @RequestParam("phoneNumber") String phoneNumber,
                          @RequestParam("markName") String markName,
-                         @RequestParam("date") LocalDate date,
+                         @RequestParam("first_date") LocalDate firstDate,
+                         @RequestParam("last_date") LocalDate lastDate,
                          HttpSession session){
         var redBlackTree = (RedBlackTree) session.getAttribute("redBlackTree");
 
         redBlackTree.deleteNode(RecordsReadDto.builder()
                 .id(0)
-                .stateNumber(stateNumber)
+                .fio(fio)
                 .phoneNumber(phoneNumber)
                 .markName(markName)
-                .date(date)
+                .first_date(firstDate)
+                .last_date(lastDate)
                 .build());
 
         session.setAttribute("redBlackTree", redBlackTree);
@@ -174,22 +178,24 @@ public class UserRestController {
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
-                if (parts.length != 4) {
+                if (parts.length != 7) {
                     // Обработка некорректных строк
                     continue;
                 }
 
-                String stateNumber = parts[0];
-                String phoneNumber = parts[1];
-                String markName = parts[2];
-                LocalDate date = LocalDate.parse(parts[3], formatter);
+                String fio = parts[0] + " " + parts[1] + " " + parts[2];
+                String phoneNumber = parts[3];
+                String markName = parts[4];
+                LocalDate firstDate = LocalDate.parse(parts[5], formatter);
+                LocalDate lastDate = LocalDate.parse(parts[6], formatter);
 
                 RecordsReadDto record = RecordsReadDto.builder()
                         .id(0)
-                        .stateNumber(stateNumber)
+                        .fio(fio)
                         .phoneNumber(phoneNumber)
                         .markName(markName)
-                        .date(date)
+                        .first_date(firstDate)
+                        .last_date(lastDate)
                         .build();
 
                 records.add(record);
@@ -220,17 +226,19 @@ public class UserRestController {
         String fileName = "car_records.txt";
 
         try {
-            List<RecordsReadDto> records = recordService.findAll();
+            List<RecordsReadDto> records = recordsService.findAll();
             StringBuilder fileContent = new StringBuilder();
 
             for (RecordsReadDto record : records) {
-                fileContent.append(record.getStateNumber())
+                fileContent.append(record.getFio())
                         .append(" ")
                         .append(record.getPhoneNumber())
                         .append(" ")
                         .append(record.getMarkName())
                         .append(" ")
-                        .append(record.getDate())
+                        .append(record.getFirst_date())
+                        .append(" ")
+                        .append(record.getLast_date())
                         .append("\n");
             }
 

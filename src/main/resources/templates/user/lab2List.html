@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lab2List</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <style>
+
+    body {
+      background: url('https://www.funnyart.club/uploads/posts/2021-12/1640206291_44-www-funnyart-club-p-razmitie-foni-s-mashinami-46.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Отключаем прокрутку страницы */
+      margin: 0;
+      height: 100vh; /* Задаем высоту для всего окна */
+      padding-bottom: 40px;
+    }
+
+    .header {
+      background-color: #2EACC7;
+      padding: 20px;
+      display: flex;
+      border-radius: 10px;
+      opacity: 65%;
+    }
+
+    .description-button, .main-button {
+      margin-right: 20px;
+      padding: 10px 20px;
+      background-color: #2EACC7;
+      color: white;
+      border-radius: 4px;
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .description-button:hover, .main-button:hover {
+      background-color: #077D97;
+    }
+
+    .content {
+      background: #FFFFFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px 30px;
+      display: flex;
+      flex-direction: column;
+      height: 78%; /* Высота с учетом заголовка */
+    }
+
+    .form-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      overflow-y: auto; /* Прокручивать только форму */
+      overflow-x: hidden;
+    }
+
+    .form-content details{
+      flex-direction: row;
+    }
+
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 20px;
+    }
+
+    .record-table th, .record-table td {
+      padding: 8px;
+      /*border-radius: 10px;*/
+      text-align: center;
+    }
+
+    .record-table th {
+      background-color: rgba(46, 172, 199, 0.66);
+      padding: 6px 15px;
+      width: 100px;
+      text-align: center;
+    }
+
+    .complete-botton {
+      margin-right: 10px;
+      padding: 5px 10px;
+      background-color: #2EACC7;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 13px;
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header">
+    <a href="lab2Desc.html">
+      <button id="description" class="description-button"> The most expensive car </button>
+    </a>
+    <a href="lab2Main.html">
+      <button id="main" class="main-button"> main </button>
+    </a>
+  </div>
+</header>
+
+<div class="content">
+
+  <div id="main-content" class="form-content">
+
+    <details>
+      <summary> Graph </summary>
+      <form>
+        <p>
+          Значение по оси OX:<br>
+          <input  type="radio"  name="model" value="m"> model <br>
+          <input  type="radio"  name="year" value="y"> year <br>
+          <input  type="radio"  name="sale" value="s"> sale
+        </p>
+
+        <input type="checkbox" name="maxSale" value="1"> Max sale <br>
+        <input type="checkbox" name="minSale" value="0"> Min sale <br>
+
+        <br><button type="submit" class="complete-botton"> Complete </button>
+      </form>
+    </details><br>
+
+    <details>
+      <summary> Filter </summary>
+      <br>
+      <label for="mark-name">Mark name</label><br>
+      <input type="text" id="mark-name" name="markName" placeholder="Subaru" required><br>
+
+      <br><label>Sale from and to</label><br>
+      <div>
+        <input type="number" id="start-sale" name="fromSale" required>
+        <span>to</span>
+        <input type="number" id="end-sale" name="endSale" required>
+      </div>
+
+      <br><label>Year from and to</label><br>
+      <div>
+        <input type="number" id="start-year" name="fromYear" required>
+        <span>to</span>
+        <input type="number" id="end-year" name="endYear" required>
+      </div>
+
+      <br><label>Vin from and to</label><br>
+      <div>
+        <input type="number" id="start-vin" name="fromVin" required>
+        <span>to</span>
+        <input type="number" id="end-vin" name="endVin" required>
+      </div>
+
+      <br><label>Body number from and to</label><br>
+      <div>
+        <input type="number" id="start-body" name="fromBody" required>
+        <span>to</span>
+        <input type="number" id="end-body" name="endBody" required>
+      </div>
+
+      <br><button type="submit" id="searchBtn" class="complete-botton">complete</button>
+    </details><br>
+
+    <details>
+      <summary> Sorted </summary>
+      <form>
+        <p>Первый уровень:</p>
+        <select>
+          <option value="0" selected> sale </option>
+          <option value="1"> name </option>
+          <option value="2"> year </option>
+        </select>
+        <p>Второй уровень:</p>
+        <select>
+        <option value="0" selected> sale </option>
+        <option value="1"> name </option>
+        <option value="2"> year </option>
+      </select>
+        <p>Третий уровень:</p>
+        <select>
+        <option value="0" selected> sale </option>
+        <option value="1"> name </option>
+        <option value="2"> year </option>
+      </select>
+        <br><br><button type="submit" id="sortedBtn" class="complete-botton">complete</button>
+      </form>
+    </details><br>
+
+
+
+    <table class="record-table" border="2">
+      <tr class="table-header">
+        <th>Mark Name</th>
+        <th>Model</th>
+        <th>Year</th>
+        <th>Sale</th>
+        <th>VIN Number</th>
+        <th>Chassis Number</th>
+      </tr>
+
+      <tr>
+        <td>Bugatti</td>
+        <td>Chiron Super Sport</td>
+        <td>2021</td>
+        <td>$3,000,000</td>
+        <td>1A4AABBC5KD501999</td>
+        <td>CHS123456789</td>
+      </tr>
+      <tr>
+        <td>Porsche</td>
+        <td>917</td>
+        <td>1970</td>
+        <td>$3,000,000</td>
+        <td>WP0ZZZ99ZTS392126</td>
+        <td>CHS987654321</td>
+      </tr>
+      <tr>
+        <td>Pagani</td>
+        <td>Zonda HP Barchetta</td>
+        <td>2019</td>
+        <td>$17,500,000</td>
+        <td>ZHWUR1ZDA3LL99999</td>
+        <td>CHS456123789</td>
+      </tr>
+      <tr>
+        <td>Rolls-Royce</td>
+        <td>Sweptail</td>
+        <td>2017</td>
+        <td>$13,000,000</td>
+        <td>SCA664S50K9U99876</td>
+        <td>CHS654321987</td>
+      </tr>
+      <tr>
+        <td>Bugatti</td>
+        <td>Centodieci</td>
+        <td>2022</td>
+        <td>$9,000,000</td>
+        <td>VF9SY25V85M795123</td>
+        <td>CHS789654123</td>
+      </tr>
+      <tr>
+        <td>Ferrari</td>
+        <td>F60 America</td>
+        <td>2014</td>
+        <td>$2,500,000</td>
+        <td>ZFF65LJA5H0212345</td>
+        <td>CHS159753486</td>
+      </tr>
+      <tr>
+        <td>Koenigsegg</td>
+        <td>CCXR Trevita</td>
+        <td>2010</td>
+        <td>$4,800,000</td>
+        <td>YV1MW49H262019995</td>
+        <td>CHS753951258</td>
+      </tr>
+      <tr>
+        <td>McLaren</td>
+        <td>Sabre</td>
+        <td>2020</td>
+        <td>$3,000,000</td>
+        <td>SBM13ABA8FW009876</td>
+        <td>CHS456789123</td>
+      </tr>
+      <tr>
+        <td>Mercedes-Benz</td>
+        <td>Maybach Exelero</td>
+        <td>2004</td>
+        <td>$8,000,000</td>
+        <td>WDDJK7DA3FF012345</td>
+        <td>CHS951753123</td>
+      </tr>
+      <tr>
+        <td>Bugatti</td>
+        <td>Veyron Grand Sport Vitesse</td>
+        <td>2013</td>
+        <td>$2,600,000</td>
+        <td>VF9SK2D28FM795567</td>
+        <td>CHS123987456</td>
+      </tr>
+      <tr>
+        <td>Aston Martin</td>
+        <td>Valhalla</td>
+        <td>2023</td>
+        <td>$1,500,000</td>
+        <td>SCFHDDAJ5GGS23456</td>
+        <td>CHS321456789</td>
+      </tr>
+      <tr>
+        <td>Lamborghini</td>
+        <td>Veneno</td>
+        <td>2014</td>
+        <td>$4,500,000</td>
+        <td>ZHWUR1ZD1FL001999</td>
+        <td>CHS951486753</td>
+      </tr>
+      <tr>
+        <td>Porsche</td>
+        <td>918 Spyder</td>
+        <td>2015</td>
+        <td>$1,000,000</td>
+        <td>WP0ZZZ91ZFS800001</td>
+        <td>CHS789123654</td>
+      </tr>
+      <tr>
+        <td>Ferrari</td>
+        <td>Pininfarina Sergio</td>
+        <td>2013</td>
+        <td>$3,000,000</td>
+        <td>ZFF65LJA4F0210002</td>
+        <td>CHS654789321</td>
+      </tr>
+      <tr>
+        <td>BMW</td>
+        <td>3.0 CSL Hommage</td>
+        <td>2015</td>
+        <td>$1,200,000</td>
+        <td>WBS1J9C59FV606789</td>
+        <td>CHS456321987</td>
+      </tr>
+      <tr>
+        <td>Lotus</td>
+        <td>Evija</td>
+        <td>2020</td>
+        <td>$2,000,000</td>
+        <td>SCRSAZ44AFC000567</td>
+        <td>CHS987654753</td>
+      </tr>
+      <tr>
+        <td>Rimac</td>
+        <td>C_Two</td>
+        <td>2021</td>
+        <td>$2,000,000</td>
+        <td>VU1AM1234KC029567</td>
+        <td>CHS321654987</td>
+      </tr>
+      <tr>
+        <td>McLaren</td>
+        <td>Elva</td>
+        <td>2021</td>
+        <td>$1,700,000</td>
+        <td>SBM13ABA5FW009876</td>
+        <td>CHS951486321</td>
+      </tr>
+      <tr>
+        <td>Mercedes-Benz</td>
+        <td>G63 AMG 6x6</td>
+        <td>2013</td>
+        <td>$500,000</td>
+        <td>WDDYX7FA5F0000012</td>
+        <td>CHS147258369</td>
+      </tr>
+      <tr>
+        <td>Bugatti</td>
+        <td>Chiron</td>
+        <td>2016</td>
+        <td>$2,900,000</td>
+        <td>VF9SY2C27GM795123</td>
+        <td>CHS258147369</td>
+      </tr>
+      <tr>
+        <td>Ferrari</td>
+        <td>LaFerrari</td>
+        <td>2013</td>
+        <td>$1,500,000</td>
+        <td>ZFF65LJA1G0212345</td>
+        <td>CHS369852147</td>
+      </tr>
+      <tr>
+        <td>Porsche</td>
+        <td>918 Spyder</td>
+        <td>2015</td>
+        <td>$1,000,000</td>
+        <td>WP0ZZZ91ZFS805432</td>
+        <td>CHS963852741</td>
+      </tr>
+      <tr>
+        <td>Pagani</td>
+        <td>Huayra</td>
+        <td>2013</td>
+        <td>$2,600,000</td>
+        <td>ZHWUR1ZD9FL001000</td>
+        <td>CHS321789654</td>
+      </tr>
+      <tr>
+        <td>Aston Martin</td>
+        <td>One-77</td>
+        <td>2012</td>
+        <td>$1,500,000</td>
+        <td>SCFHDDAJ1GG012345</td>
+        <td>CHS753159486</td>
+      </tr>
+      <tr>
+        <td>McLaren</td>
+        <td>P1</td>
+        <td>2013</td>
+        <td>$1,150,000</td>
+        <td>SBM13ABA1FW001234</td>
+        <td>CHS159486753</td>
+      </tr>
+      <tr>
+        <td>Koenigsegg</td>
+        <td>Agera RS</td>
+        <td>2015</td>
+        <td>$2,500,000</td>
+        <td>YV1MW49H351239876</td>
+        <td>CHS789456321</td>
+      </tr>
+      <tr>
+        <td>Lamborghini</td>
+        <td>Huracán STO</td>
+        <td>2021</td>
+        <td>$327,000</td>
+        <td>ZHWUR1ZD2FL002345</td>
+        <td>CHS963741852</td>
+      </tr>
+      <tr>
+        <td>Rimac</td>
+        <td>Concept One</td>
+        <td>2016</td>
+        <td>$980,000</td>
+        <td>VU1AM1234JC029765</td>
+        <td>CHS951486357</td>
+      </tr>
+      <tr>
+        <td>Ferrari</td>
+        <td>SP38</td>
+        <td>2018</td>
+        <td>$4,000,000</td>
+        <td>ZFF65LJA4H0214567</td>
+        <td>CHS852963741</td>
+      </tr>
+      <tr>
+        <td>Rolls-Royce</td>
+        <td>Phantom VIII</td>
+        <td>2018</td>
+        <td>$450,000</td>
+        <td>SCA665C50KU498765</td>
+        <td>CHS123654789</td>
+      </tr>
+      <tr>
+        <td>McLaren</td>
+        <td>Speedtail</td>
+        <td>2020</td>
+        <td>$2,250,000</td>
+        <td>SBM13ABA9FW001988</td>
+        <td>CHS321987654</td>
+      </tr>
+      <tr>
+        <td>Koenigsegg</td>
+        <td>Regera</td>
+        <td>2016</td>
+        <td>$1,900,000</td>
+        <td>YV1MW49H361234567</td>
+        <td>CHS789654321</td>
+      </tr>
+      <tr>
+        <td>Pagani</td>
+        <td>Zonda Tricolore</td>
+        <td>2010</td>
+        <td>$6,000,000</td>
+        <td>ZHWUR1ZD1FL003456</td>
+        <td>CHS951753486</td>
+      </tr>
+      <tr>
+        <td>Lamborghini</td>
+        <td>Sián</td>
+        <td>2021</td>
+        <td>$3,700,000</td>
+        <td>ZHWUR1ZD2FL004567</td>
+        <td>CHS987654321</td>
+      </tr>
+      <tr>
+        <td>Bugatti</td>
+        <td>Divo</td>
+        <td>2020</td>
+        <td>$5,800,000</td>
+        <td>VF9SK2D2FM001234</td>
+        <td>CHS123456987</td>
+      </tr>
+      <tr>
+        <td>McLaren</td>
+        <td>Senna</td>
+        <td>2019</td>
+        <td>$1,000,000</td>
+        <td>SBM13ABA7FW002345</td>
+        <td>CHS852741963</td>
+      </tr>
+      <tr>
+        <td>Koenigsegg</td>
+        <td>Jesko</td>
+        <td>2022</td>
+        <td>$3,000,000</td>
+        <td>YV1MW49H371234567</td>
+        <td>CHS753486159</td>
+      </tr>
+      <tr>
+        <td>Ferrari</td>
+        <td>FXX K</td>
+        <td>2015</td>
+        <td>$2,700,000</td>
+        <td>ZFF65LJA2F0212345</td>
+        <td>CHS357159486</td>
+      </tr>
+      <tr>
+        <td>Mercedes-Benz</td>
+        <td>AMG One</td>
+        <td>2022</td>
+        <td>$2,700,000</td>
+        <td>WDDJK7DA1FF005678</td>
+        <td>CHS963258741</td>
+      </tr>
+      <tr>
+        <td>Rimac</td>
+        <td>Nevera</td>
+        <td>2023</td>
+        <td>$2,400,000</td>
+        <td>VU1AM1234KC039876</td>
+        <td>CHS159874236</td>
+      </tr>
+      <tr>
+        <td>Lamborghini</td>
+        <td>Countach LPI 800-4</td>
+        <td>2022</td>
+        <td>$2,600,000</td>
+        <td>ZHWUR1ZD2FL007654</td>
+        <td>CHS357489621</td>
+      </tr>
+      <tr>
+        <td>Ferrari</td>
+        <td>Daytona SP3</td>
+        <td>2022</td>
+        <td>$2,250,000</td>
+        <td>ZFF65LJA3F0234567</td>
+        <td>CHS123789654</td>
+      </tr>
+
+    </table>
+
+
+
+  </div>
+
+</div>
+
+</body>
+
+</html>

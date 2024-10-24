@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab_1</title>
+</head>
+<body>
+
+<div id="modalAdd" class="modal">
+    <div class="modalAdd-content">
+        <span class="closeAdd">&times;</span>
+        <form id="modalFormAdd" name="entity" class="modal-form" th:action="@{/api/users/add}" method="post">
+            <label for="fioAdd">ФИО</label>
+            <input type="text" id="fioAdd" name="fio" required>
+
+            <label for="phone-numberAdd">Номер телефона</label>
+            <input type="text" id="phone-numberAdd" name="phoneNumber" placeholder="+7*** *** ****"  required>
+
+            <label for="brandAdd">Марка машины</label>
+            <input type="text" id="brandAdd" name="markName" placeholder="Subaru" required>
+
+            <label for="dateAddFirst">Дата с</label>
+            <input type="date" id="dateAddFirst" name="first_date" required>
+
+            <label for="dateAddLast">Дата по</label>
+            <input type="date" id="dateAddLast" name="last_date" required>
+
+            <button type="submit">Подтвердить</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

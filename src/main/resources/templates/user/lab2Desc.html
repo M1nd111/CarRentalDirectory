@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab2Desc</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+
+        body {
+            background: url('https://www.funnyart.club/uploads/posts/2021-12/1640206291_44-www-funnyart-club-p-razmitie-foni-s-mashinami-46.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Отключаем прокрутку страницы */
+            margin: 0;
+            height: 100vh; /* Задаем высоту для всего окна */
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background-color: #2EACC7;
+            padding: 20px;
+            display: flex;
+            border-radius: 10px;
+            opacity: 65%;
+        }
+
+        .main-button, .list-button {
+            margin-right: 20px;
+            padding: 10px 20px;
+            background-color: #2EACC7;
+            color: white;
+            border-radius: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.22);
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .main-button:hover, .list-button:hover {
+            background-color: #077D97;
+        }
+
+        .content {
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            height: 78%; /* Высота с учетом заголовка */
+        }
+
+        .form-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            overflow-y: auto; /* Прокручивать только форму */
+            overflow-x: hidden;
+        }
+
+        .form-content img {
+            align-self: center;
+            margin-bottom: 20px;
+        }
+
+        .form-content h2 {
+            margin: 0;
+            flex-shrink: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <div class="header">
+        <a href="lab2Main.html">
+            <button id="main" class="main-button"> main </button>
+        </a>
+        <a href="lab2List.html">
+            <button id="list" class="list-button"> Top 50 expensive cars </button>
+        </a>
+    </div>
+</header>
+
+<div class="content">
+
+    <div id="main-content" class="form-content">
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127eec/scale_2400"
+             alt="Mercedes-Benz 300 SLR Uhlenhaut" width="500px">
+
+        <div>
+            <h2>Mercedes-Benz 300 SLR Uhlenhaut</h2>
+            <p>
+                Mercedes-Benz 300 SLR Uhlenhaut Coupe — это один из самых известных спортивных автомобилей в истории. В 1955 году было создано всего два экземпляра этой модели для участия в гонках. Вот его основные технические характеристики:
+            </p>
+
+            <h3>Технические характеристики Mercedes-Benz 300 SLR Uhlenhaut Coupe:</h3>
+            <ul>
+                <li><strong>Год производства:</strong> 1955</li>
+                <li><strong>Двигатель:</strong> 3.0-литровый 8-цилиндровый рядный двигатель с турбонаддувом</li>
+                <li><strong>Мощность:</strong> 302 л.с. (225 кВт)</li>
+                <li><strong>Крутящий момент:</strong> около 318 Нм</li>
+                <li><strong>Трансмиссия:</strong> 5-ступенчатая механическая коробка передач</li>
+                <li><strong>Разгон 0-100 км/ч:</strong> примерно 6.9 секунд</li>
+                <li><strong>Максимальная скорость:</strong> 284 км/ч (176 миль/ч)</li>
+                <li><strong>Шасси:</strong> изготовлено из магниевого сплава (специальный материал под названием "электрон")</li>
+                <li><strong>Масса:</strong> 1117 кг</li>
+                <li><strong>Тормоза:</strong> барабанные тормоза</li>
+                <li><strong>Подвеска:</strong> независимая на двойных поперечных рычагах спереди и задняя ось с тягой</li>
+            </ul>
+
+            <h3>Особенности:</h3>
+            <ul>
+                <li><strong>Кузов:</strong> Это купе с закрытым кузовом, созданное на базе успешного гоночного Mercedes-Benz W196, который участвовал в Формуле-1.</li>
+                <li><strong>Уникальность:</strong> Существует только два автомобиля этой модели, и оба были построены в качестве дорожной версии гоночного автомобиля.</li>
+                <li><strong>Стоимость:</strong> Один из двух экземпляров был продан в 2022 году на аукционе за 135 миллионов евро, став самым дорогим автомобилем в истории.</li>
+            </ul>
+
+            <p>
+                300 SLR Uhlenhaut также известен своим выдающимся аэродинамическим дизайном и передовыми технологиями того времени, что делает его иконой как в мире автомобильного дизайна, так и в гонках.
+            </p>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

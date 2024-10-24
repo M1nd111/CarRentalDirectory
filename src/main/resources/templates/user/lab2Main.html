@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab2Main</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+
+        body {
+            background: url('https://www.funnyart.club/uploads/posts/2021-12/1640206291_44-www-funnyart-club-p-razmitie-foni-s-mashinami-46.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Отключаем прокрутку страницы */
+            margin: 0;
+            height: 100vh; /* Задаем высоту для всего окна */
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background-color: #2EACC7;
+            padding: 20px;
+            display: flex;
+            border-radius: 10px;
+            opacity: 65%;
+        }
+
+        .description-button, .list-button {
+            margin-right: 20px;
+            padding: 10px 20px;
+            background-color: #2EACC7;
+            color: white;
+            border-radius: 4px;
+            border: 2px solid rgba(255, 255, 255, 0.22);
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .description-button:hover, .list-button:hover {
+            background-color: #077D97;
+        }
+
+        .content {
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            height: 78%; /* Высота с учетом заголовка */
+        }
+
+        .form-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            overflow-y: auto; /* Прокручивать только форму */
+            overflow-x: hidden;
+        }
+
+        .form-content img {
+            align-self: center;
+            margin-bottom: 20px;
+        }
+
+        .form-content h2 {
+            margin: 0;
+            flex-shrink: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <div class="header">
+        <a href="lab2Desc.html">
+            <button id="description" class="description-button"> The most expensive car </button>
+        </a>
+        <a href="lab2List.html">
+            <button id="list" class="list-button"> Top 50 expensive cars </button>
+        </a>
+    </div>
+</header>
+
+<div class="content">
+
+    <div id="main-content" class="form-content">
+
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127eec/scale_2400"
+             alt="Mercedes-Benz 300 SLR Uhlenhaut" width="500px">
+        <div>
+            <h2>Mercedes-Benz 300 SLR Uhlenhaut</h2>
+            <p>Проданный в 2022 году на закрытом аукционе Mercedes-Benz 300 SLR на данный момент является самой дорогой машиной в истории.
+                Версия Uhlenhaut названа в честь гонщика и инженера, который создал гоночную модель Mercedes-Benz 300 SLR. Всего в 1955 году было выпущено два гражданских аналога этого гоночного автомобиля. На одной из этих машин ездил сам инженер.
+
+                Купе внешне схоже с серийной гражданской моделью SL 300 — например, у него также установлены двери “крыло чайки”, но этот автомобиль построен именно на базе гоночного болида.
+
+                Два автомобиля 300 SLR хранились в музее Mercedes-Benz. На аукционе была продана та машина, на которой ездил Рудольф Уленхаут.
+
+                Технические характеристики Двигатель 3 л, бензин, атмосферник (302 л. с., 311 Н⋅м) Коробка передач Механическая, 5 ступеней Привод Задний Максимальная скорость 300 км/ч.
+            </p>
+        </div><br>
+
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127eed/scale_1200"
+             alt="Ferrari 250 GTO." width="500px">
+        <div>
+            <h2>Ferrari 250 GTO.</h2>
+            <p>С 1962 по 1964 годы итальянская компания выпустила 36 экземпляров 250 GTO.
+                Гоночный болид 16 раз выигрывал различные соревнования.
+                Примечательно, что первый владелец 250 GTO приобрёл машину за $18 500.
+                В 2018 году было продано три машины. Одна из них — в рамках частной сделки.
+                Предположительно, покупатель отдал за Феррари $70 000 000.
+                В 2019 году суд в итальянской Болонье признал Ferrari 250 GTO произведением искусства и запретил её копировать.
+                Технические характеристики Двигатель 3 л, бензин,
+                атмосферник (296 л. с., 294 Н⋅м) Коробка передач Механическая,
+                5 ступеней Привод Задний Разгон до 100 км/ч 6,1 секунды
+            </p>
+        </div><br>
+
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127eee/scale_1200"
+             alt="Rolls-Royce Boat Tail." width="500px">
+        <div>
+            <h2>Rolls-Royce Boat Tail.</h2>
+            <p>Автомобили Rolls-Royce можно собрать под себя. Компания предлагает практически неограниченный набор опций. Также машины можно окрасить в любой цвет по желанию заказчика. А ещё Rolls-Royce никогда не стоили дешёво.
+                Концерн готов браться и за эксклюзивные заказы — если покупатель согласен с эксклюзивной ценой.
+                Boat Tail построен на платформе Rolls-Royce Phantom восьмого поколения. Конфигурация кузова соответствует названию модели — задняя часть действительно похожа на яхту. Кроме того, она отделана шпоном орешника. По нажатию кнопки верхние створки приподнимаются и открывается доступ в багажный отсек. В нём установлен холодильник, в котором хранится дорогое шампанское Armand de Brignac. Также предусмотрена посуда для пикника из фарфора и платины, складные табуреты и зонт, защищающий от солнца.
+
+                Салон отделан кожей, полированным алюминием и деревом. На приборной панели располагаются две пары часов Bovet 1882 — мужские и женские. Их также можно носить на руке.
+
+                Технические характеристики Двигатель 6,75 л, бензин, турбонаддув (563 л. с., 900 Н⋅м) Коробка передач Автоматическая, 8 ступеней Привод Задний Разгон до 100 км/ч 5,3 секунды
+            </p>
+        </div><br>
+
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127eef/scale_1200"
+             alt="Aston Martin DBR1." width="500px">
+        <div>
+            <h2>Aston Martin DBR1.</h2>
+            <p>Некоторые эксперты называют легендарный гоночный болид DBR1 одним из важнейших автомобилей в истории британской компании. Он появился в 1956 году.
+                Именно благодаря этой модели Aston Martin впервые одержал победу в гонке “24 часа Ле-Мана” в 1959 году. А двумя годами ранее DBR1 выиграл гонку “1000 км Нюрбургринга”. В разные периоды времени этот болид пилотировали такие гонщики, как Кэрролл Шелби, Джек Брэбхем и Стирлинг Мосс. Машина была продана на аукционе в 2017 году.
+                Технические характеристики Двигатель 3 л, бензин, атмосферник (254 л. с.) Коробка передач Механическая, 5 ступеней Привод Задний Разгон до 100 км/ч 5,3 секунды
+            </p>
+        </div><br>
+
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127ef0/scale_1200"
+             alt="Bugatti La Voiture Noir." width="500px">
+        <div>
+            <h2>Bugatti La Voiture Noir.</h2>
+            <p>Французская компания Bugatti принадлежит Volkswagen и занимается выпуском суперкаров — эксклюзивных спортивных автомобилей. Но даже у таких редких машин бывают специальные версии.
+                La Voiture Noir был построен в 2019 году. Технически он идентичен суперкару Bugatti Chiron. Общая длина автомобиля увеличилась на 45 см. Кузов выполнен из углепластика, а передний бампер интегрирован в корпус машины. Фары собирают и устанавливают вручную. Салон отделан кожей, а также имеет вставки из алюминия и обработанного дерева.
+
+                Технические характеристики Двигатель 8 л, бензин, турбонаддув (1479 л. с., 1600 Н⋅м) Коробка передач Роботизированная, 7 ступеней Привод Полный Разгон до 100 км/ч 2,3 секунды
+            </p>
+
+        </div><br>
+
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_6555daff0bda9c7cf1127234_6555db250bda9c7cf1127ef1/scale_1200"
+             alt="Pagani Zonda HP Barchetta." width="500px">
+        <div>
+            <h2>Pagani Zonda HP Barchetta.</h2>
+            <p>Итальянская компания Pagani славится своими спортивными автомобилями, а также их специальными версиями. Это эксклюзивные модели по очень высоким ценам.
+                Самый дорогой автомобиль компании — Zonda HP Barchetta. Он появился в 2017 году, когда выпуск стоковой версии Zonda был завершён. Примечательно, что аббревиатура HP — это инициалы основателя компании Horacio Pagani. Всего было выпущено три экземпляра, только два из которых поступили в продажу. Barchetta отличается уникальным дизайном отделки кузова и интерьера.
+                Технические характеристики Двигатель 7,3 л, бензин, атмосферник (789 л. с., 850 Н⋅м) Коробка передач Механическая, 6 ступеней Привод Задний Разгон до 100 км/ч 3,4 секунды
+            </p>
+        </div><br>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

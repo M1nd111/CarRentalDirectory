@@ -1,5 +1,6 @@
 package spring.ws.carrentaldirectoryweb.core.service;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;

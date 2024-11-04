@@ -19,6 +19,7 @@ public class ListToDb {
         list.add(record);
     }
 
+    //** Ошибочка тут
     public void removeRecord(RecordsReadDto record) {
         list.remove(record);
     }
